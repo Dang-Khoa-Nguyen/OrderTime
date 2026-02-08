@@ -1,15 +1,20 @@
 // icon imports
 import { FiPlus } from "react-icons/fi";
 
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
+import AddModal from "./models/AddModel";
 
 export default function NavBar() {
-    const fileInputRef = useRef(null);
     const [uploading, setUploading] = useState(false);
-    const handleFileChange = async (e) => {
-        const selected = e.target.files?.[0];
-        if (!selected) return;
+    const [openCreate, setOpenCreate] = useState(false);
+    const handleCreate = async (newTransaction) => {
+    try {
+      console.log(1)
+      setOpenCreate(false);
+    } catch (err) {
+        console.log(err)
     }
+  };
 
     return(
     <div className="flex justify-between">
@@ -17,21 +22,20 @@ export default function NavBar() {
         <div>
             <button 
             type="button"
-            disabled={uploading}
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => setOpenCreate(true)}
             className="flex items-center text-white px-4 py-2 my-3 mx-3 
             rounded-lg border border white hover:bg-white hover:text-black
             duration-200 transition"> 
                 <FiPlus/> Add menu 
             
             </button>
-            <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv, .pdf, .png, .jpg  "
-                className="hidden"
-                onChange={handleFileChange}
+
+            {openCreate && (
+            <AddModal
+                onClose={() => setOpenCreate(false)}
+                onSave={handleCreate}
             />
+        )}
         </div>
     </div>
     )

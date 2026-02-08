@@ -1,7 +1,7 @@
 // component imports
-import RestaurantSelector from "../ui/RestaurantSelector"
-import Introduction from "../ui/Introduction"
-import StartOrder from "../ui/StartOrder"
+import RestaurantSelector from "../components/ui/RestaurantSelector"
+import Introduction from "../components/ui/Introduction"
+import StartOrder from "../components/ui/StartOrder"
 
 // icon imports
 import { RiSpeakFill } from "react-icons/ri";
