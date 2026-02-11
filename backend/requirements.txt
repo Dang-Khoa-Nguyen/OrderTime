@@ -1,0 +1,5 @@
+python-dotenv
+supabase
+flask
+flask-cors
+openai>=1.0.0

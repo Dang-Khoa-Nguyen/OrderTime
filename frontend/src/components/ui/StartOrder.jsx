@@ -1,7 +1,7 @@
 // icon imports
 import { TiltButton } from 'react-tilt-button';
 
-export default function StartOrder() {
+export default function StartOrder({getOrder}) {
     return(
     <div>
         <TiltButton
@@ -10,6 +10,7 @@ export default function StartOrder() {
             height={80}
             radius={16}
             surfaceColor="#2a67d1"
+            onClick={getOrder}
         >
             Start Order
         </TiltButton>
