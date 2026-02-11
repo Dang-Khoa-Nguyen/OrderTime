@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
+import useRestaurant from "../../hooks/useRestaurant";
 
 export default function AddModal({ onClose, onSave }) {
     const fileInputRef = useRef(null);
@@ -9,14 +10,7 @@ export default function AddModal({ onClose, onSave }) {
     const [name, setName] = useState("");
     const [restaurant, setRestaurant] = useState("");
     const [file, setFile] = useState(null);
-    const [restaurantList, setRestaurantList] = useState([])
-
-    const categories = [
-        { id: 1, name: "New" },
-        { id: 2, name: "Utilities" },
-        { id: 3, name: "Cash" },,
-    ];
-
+    const {restaurants, loading, error} = useRestaurant();
 
     /*---------- Initial ---------*/
     
@@ -57,10 +51,10 @@ export default function AddModal({ onClose, onSave }) {
             className="w-full border p-2 mb-4 bg-white rounded-lg"
           >
             <option value="">Select available restaurant</option>
-
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.name}>
-                {cat.name}
+            <option value="New"> New restaurant </option>
+            {restaurants.map((res) => (
+              <option key={res.id} value={res.name}>
+                {res.name}
               </option>
             ))}
           </select>

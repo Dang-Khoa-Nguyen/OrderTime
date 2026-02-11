@@ -2,7 +2,7 @@
 import { FiPlus } from "react-icons/fi";
 
 import { useState, useRef } from "react";
-import AddModal from "./models/AddModel";
+import AddModal from "../models/AddModel";
 
 export default function NavBar() {
     const [uploading, setUploading] = useState(false);
