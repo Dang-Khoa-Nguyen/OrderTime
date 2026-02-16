@@ -9,6 +9,6 @@ from pathlib import Path
 if __name__ == "__main__":
     image_url = "images/drink_menu.png"
     
-    res = GenAIService.generate_image_to_json(image_url)
+    res = GenAIService.generate_image_to_json(image_url,1)
     new_res = clean_json_from_ai(res)
     print(new_res)

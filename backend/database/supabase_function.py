@@ -43,6 +43,30 @@ class SupabaseFunction():
 
         return response.data if response.data else []
     
-    def upload_menu(SUPABASE_CLIENT_SERVICE,restaurant):
-        #TODO: Return Boolean
-        return None
+    def get_category_info(SUPABASE_CLIENT_SERVICE):
+        response = (
+            SUPABASE_CLIENT_SERVICE
+            .table("category")
+            .select("id, category_name")
+            .execute()
+        )
+        
+        return response.data if response.data else []
+    
+    def upload_item(SUPABASE_CLIENT_SERVICE,item):
+        try:
+            response = (
+                SUPABASE_CLIENT_SERVICE
+                .table("menu_items")
+                .insert({
+                "name": item["name"],
+                "category_id": item["category_id"],
+                "price": float(item["price"]),
+                "restaurant_id": item["restaurant_id"],
+                })
+                .execute()
+            )
+            return True
+        
+        except Exception as e:
+            return e
