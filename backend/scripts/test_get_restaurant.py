@@ -8,3 +8,4 @@ from database.supabase_client import SupabaseClient
 if __name__ == "__main__":
     SUPABASE_CLIENT_ANON = SupabaseClient.get_supabase_anon()
     print(SupabaseFunction.get_restaurants(SUPABASE_CLIENT_ANON))
+    print(SupabaseFunction.get_category_info(SUPABASE_CLIENT_ANON))

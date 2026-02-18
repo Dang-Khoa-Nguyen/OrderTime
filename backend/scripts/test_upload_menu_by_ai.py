@@ -13,11 +13,12 @@ if __name__ == "__main__":
     
     res = GenAIService.generate_image_to_json(image_url, 1)
     item = clean_json_from_ai(res)
-    
+    print(item)
     if len(item) > 1:
+        count = 0
         for i in item:
             print(i)
-            SupabaseFunction.upload_item(SUPABASE_CLIENT_ANON, i)
-            print(True)
+            print(SupabaseFunction.upload_item(SUPABASE_CLIENT_ANON, i), count)
+            count+=1   
     else:
-        print(False)
+        print(SupabaseFunction.upload_item(SUPABASE_CLIENT_ANON, item[0]))

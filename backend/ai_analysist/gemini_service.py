@@ -35,11 +35,10 @@ class GenAIService:
             [{"name": string, "category_id": category_id, "price": number, "restaurant_id": restaurant_id}].
             category must be either food or drink.
             No explanation text.
-            Get one item ONLY in the image.
             if the name of an item is upcase, you should write it as lowcase.
             """
             f"This is a restaurant_id:{restaurant_id}. Please add it to the JSON. "
-            f"The category_id should be set in this list: {category_info}"
+            f"The category_id should be set in this list: {category_info}. You should set by id, not category_name"
         )
         
         res = client.models.generate_content(
