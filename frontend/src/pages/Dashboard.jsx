@@ -14,6 +14,7 @@ export default function Dashboard() {
     const [restaurantId, setRestaurantId] = useState(0);
     const [text, setText] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
 
     const handleOpen = () => {
         setIsOpen(true);
@@ -25,6 +26,12 @@ export default function Dashboard() {
     console.log(restaurantId)
     const speak = (text) => {
         const msg = new SpeechSynthesisUtterance(text);
+        setIsSpeaking(true)
+
+        msg.onend = () => {
+            setIsSpeaking(false);
+        }
+        
         window.speechSynthesis.speak(msg);
     };
 
@@ -38,10 +45,10 @@ export default function Dashboard() {
         }
     };
     return(
-        <div className="text-white text-center w-full h-full"> 
+        <div className="text-white text-center w-ful h-96"> 
             <div className="flex-2 flex flex-col justify-center items-center gap-3 h-full">
                 <Introduction/>
-                <RiSpeakFill className="text-white text-3xl"/>
+                <RiSpeakFill className={`text-3xl ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
                 <RestaurantSelector setRestaurantId={setRestaurantId}/>
                 <AnswerBox text={text} isOpen={isOpen}/>
                 <div className="flex justify-between gap-4">

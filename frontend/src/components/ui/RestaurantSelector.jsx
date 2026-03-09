@@ -1,5 +1,4 @@
 import useRestaurant from "../../hooks/useRestaurant"
-import {useState, useEffetc} from "react";
 
 export default function RestaurantSelector({setRestaurantId}) {
     const {restaurants, loading, error} = useRestaurant();
