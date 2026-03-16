@@ -9,7 +9,7 @@ export default function AddModal({ onClose, onSave }) {
     const [uploading, setUploading] = useState(false);
     const [name, setName] = useState("");
     const [restaurant, setRestaurant] = useState("");
-    const [file, setFile] = useState(null);
+    const formData = new FormData();
     const {restaurants, loading, error} = useRestaurant();
 
     /*---------- Initial ---------*/
@@ -19,16 +19,20 @@ export default function AddModal({ onClose, onSave }) {
         const selected = e.target.files?.[0];
         if (!selected) return;
 
-        setFile(selected);
+        formData.append("name", name);
+        formData.append("file", selected);
+        formData.append("restaurant", restaurant)
     }
 
     /*-------------- Handle Submit ----------------*/
     const handleSubmit = (e) => {
         e.preventDefault();
+        const selected = e.target.files?.[0];
+        if (!selected) return;
         onSave({
             restaurant_name: name,
             restaurant_category: restaurant,
-            file:file
+            file:selected,
         });
     };
 
@@ -51,7 +55,7 @@ export default function AddModal({ onClose, onSave }) {
             className="w-full border p-2 mb-4 bg-white rounded-lg"
           >
             <option value="">Select available restaurant</option>
-            <option value="New"> New restaurant </option>
+            <option key="0" value="New"> New restaurant </option>
             {restaurants.map((res) => (
               <option key={res.id} value={res.name}>
                 {res.name}

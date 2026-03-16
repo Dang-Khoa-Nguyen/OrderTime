@@ -45,16 +45,16 @@ export default function Dashboard() {
         }
     };
     return(
-        <div className="text-white text-center w-ful h-96"> 
-            <div className="flex-2 flex flex-col justify-center items-center gap-3 h-full">
+        <div className="text-white text-center w-full h-96"> 
+            <div className="flex-2 flex flex-col justify-center items-center gap-5 h-full ">
                 <Introduction/>
-                <RiSpeakFill className={`text-3xl ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
-                <RestaurantSelector setRestaurantId={setRestaurantId}/>
-                <AnswerBox text={text} isOpen={isOpen}/>
-                <div className="flex justify-between gap-4">
-                    <OpenCloseButton isOpen={isOpen} handleClose={handleClose} handleOpen={handleOpen}/>
+                <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
+                <div className="flex justify-center items-center w-96 h-10 gap-4 ">
+                    <RestaurantSelector setRestaurantId={setRestaurantId}/>
                     <StartOrder getOrder={getOrder}/>
+                    <OpenCloseButton isOpen={isOpen} handleClose={handleClose} handleOpen={handleOpen}/>
                 </div>
+                <AnswerBox text={text} isOpen={isOpen}/>
             </div>
         </div>
     )

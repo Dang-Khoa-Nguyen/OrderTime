@@ -2,18 +2,17 @@
 export default function AnswerBox({text, isOpen}) {
     return(
     <div>
-
         {isOpen ? ( 
-        <div>
+        <div className="h-10">
             {text === "" ? (<p>
                 The customer didn't order yet
             </p>) : (
                 <p className="text-sm font-manrope">
                 {text}
-            </p>
+        </p>
             )}    
         </div>)  : (
-            <div></div>
+            <div className="h-10"></div>
         )}
        
     </div>
