@@ -2,6 +2,8 @@
 import RestaurantSelector from "../components/ui/RestaurantSelector"
 import Introduction from "../components/ui/Introduction"
 import StartOrder from "../components/ui/StartOrder"
+import VoiceController from "../components/controllers/VoiceController";
+import SpeedController from "../components/controllers/SpeedController";
 
 // icon imports
 import { RiSpeakFill } from "react-icons/ri";
@@ -9,8 +11,6 @@ import { fetchOrders } from "../api/Restaurant";
 import {useState} from "react";
 import AnswerBox from "../components/ui/AnswerBox";
 import OpenCloseButton from "../components/ui/OpenCloseButton";
-import IncreaseButton from "../components/ui/IncreaseButton";
-import DecreaseButton from "../components/ui/DecreaseButton";
 
 export default function Dashboard() {
     const [restaurantId, setRestaurantId] = useState(0);
@@ -19,7 +19,7 @@ export default function Dashboard() {
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [voiceReading, setVoiceReading] = useState("en-US");
     const [newRate, setNewRate] = useState(0.9);
-    const [newPitch, setNewPitch] = useState(1.1);
+    const [newPitch, setNewPitch] = useState(2);
 
     const handleOpen = () => {
         setIsOpen(true);
@@ -29,11 +29,27 @@ export default function Dashboard() {
         setIsOpen(false);
     }
 
+     const increaseTone = () => {
+        if (newPitch >= 2.5) {
+            alert("2.5 is the maximum")
+        } else {
+            setNewPitch(parseFloat((newPitch + 0.1).toFixed(1)));
+        }
+    }
+
+    const decreaseTone = () => {
+        if (newPitch == 0.1) {
+            alert("0.1 is the minimum")
+        } else {
+            setNewPitch(parseFloat((newPitch - 0.1).toFixed(1)));
+        }
+    }
+
     const increaseSpeed = () => {
         if (newRate >= 1.5) {
             alert("1.5 is the maximum")
         } else {
-            setNewRate(newRate+0.1);
+            setNewRate(parseFloat((newRate + 0.1).toFixed(1)));
         }
     }
 
@@ -41,7 +57,7 @@ export default function Dashboard() {
         if (newRate == 0.1) {
             alert("0.1 is the minimum")
         } else {
-            setNewRate(newRate-0.1);
+            setNewRate(parseFloat((newRate - 0.1).toFixed(1)));
         }
     }
     console.log(restaurantId)
@@ -73,15 +89,14 @@ export default function Dashboard() {
         }
     };
     return(
-        <div className="text-white text-center w-full h-96">
-            <div className="flex justify-center gap-4">
-            <DecreaseButton decreaseSpeed={decreaseSpeed}/>
-            <div> {newRate} </div>
-            <IncreaseButton increaseSpeed={increaseSpeed}/>
-            </div> 
+        <div className="text-white text-center w-full h-96"> 
             <div className="flex-2 flex flex-col justify-center items-center gap-5 h-full ">
                 <Introduction/>
                 <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
+                <div className="flex gap-3">
+                    <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
+                    <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
+                </div>
                 <div className="flex justify-center items-center w-96 h-10 gap-4 ">
                     <RestaurantSelector setRestaurantId={setRestaurantId}/>
                     <StartOrder getOrder={getOrder}/>
