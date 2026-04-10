@@ -26,7 +26,17 @@ def upload_menu(restaurant_id):
     if not file:
         return jsonify({"Error": "Missing file"}), 500
     
-    ai_response = GenAIService.generate_image_to_json(file, restaurant_id)
-    clean_json = clean_json_from_ai(ai_response)
-    
-    return SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json),200
+    if restaurant_id == 0:
+        restaurant_name = request.form.get("name") 
+        new_id = SupabaseFunction.upload_new_restaurant(SUPABASE_ANON_KEY, restaurant_name)
+        
+        if new_id == None:
+            return False
+        
+        ai_response = GenAIService.generate_image_to_json(file, new_id)
+        clean_json = clean_json_from_ai(ai_response)
+        return SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json, new_id)
+    else:     
+        ai_response = GenAIService.generate_image_to_json(file, restaurant_id)
+        clean_json = clean_json_from_ai(ai_response)       
+        return SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json, restaurant_id),200

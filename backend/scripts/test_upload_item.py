@@ -7,10 +7,10 @@ from database.supabase_client import SupabaseClient
 
 if __name__ == "__main__":
     SUPABASE_CLIENT_ANON = SupabaseClient.get_supabase_anon()
-    item = {
-        "name": "Banh mi gam gam",
+    item = [{
+        "name": "Banh mi haha",
         "price": 8.00,
         "category_id": 1,
         "restaurant_id": 1,
-    }
+    }]
     print(SupabaseFunction.upload_item(SUPABASE_CLIENT_ANON, item))

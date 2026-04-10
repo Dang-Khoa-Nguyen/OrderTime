@@ -53,9 +53,23 @@ class SupabaseFunction():
         
         return response.data if response.data else []
     
-    def upload_item(SUPABASE_CLIENT_SERVICE,item):
-        try:
-            response = (
+    def add_item(SUPABASE_CLIENT_SERVICE,item):
+        # Check if item already exists
+        existing = (
+            SUPABASE_CLIENT_SERVICE
+            .table("menu_items")
+            .select("id")
+            .eq("restaurant_id", int(item["restaurant_id"]))
+            .eq("name", item["name"])
+            .execute()
+        )
+
+         # Already exists, then do NOT insert
+        if existing.data:
+            return False
+
+        # Insert if not exists
+        response = (
                 SUPABASE_CLIENT_SERVICE
                 .table("menu_items")
                 .insert({
@@ -66,7 +80,62 @@ class SupabaseFunction():
                 })
                 .execute()
             )
+        return True
+
+    def upload_item(SUPABASE_CLIENT_SERVICE, items):
+        try:
+            for item in items:
+                # Check if the item is add or not.
+                is_add = SupabaseFunction.add_item(SUPABASE_CLIENT_SERVICE, item)
+                
+                # Print for checking.
+                if not is_add:
+                    print("Already have the item", item["name"])
             return True
+        except:
+            return False
+
+    def get_unique_restaurant_name(SUPABASE_CLIENT_SERVICE, restaurant_name):
+        # Check how many restaurants have the same base name
+        response = (
+            SUPABASE_CLIENT_SERVICE
+            .table("restaurant_name")
+            .select("name")
+            .ilike("name", f"{restaurant_name}%")  
+            .execute()
+        )
+
+        # no match, use original name
+        if not response.data:
+            return restaurant_name
+
+        # Extract existing names
+        existing_names = [row["name"] for row in response.data]
+
+        # exact name not taken
+        if restaurant_name not in existing_names:
+            return restaurant_name  
+
+        # find the next available number suffix
+        counter = 1
+        while f"{restaurant_name}_{counter}" in existing_names:
+            counter += 1
+
+        return f"{restaurant_name}_{counter}"
+
+    def upload_new_restaurant(SUPABASE_CLIENT_SERVICE, restaurant_name):
+        try:
+            unique_name = SupabaseFunction.get_unique_restaurant_name(SUPABASE_CLIENT_SERVICE,restaurant_name)
+            
+            response = (
+                SUPABASE_CLIENT_SERVICE
+                .table("restaurants")
+                .insert({"name": unique_name})
+                .select("id")
+                .single()
+                .execute()
+            )
+            return response.data["id"]
         
         except Exception as e:
-            return e
+            return None
