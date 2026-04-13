@@ -3,16 +3,22 @@ import { FiPlus } from "react-icons/fi";
 
 import { useState, useRef } from "react";
 import AddModal from "../models/AddModel";
+import { fetchUploadMenu } from "../../api/Restaurant";
 
 export default function NavBar() {
     const [uploading, setUploading] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
-    const handleCreate = async (newTransaction) => {
+    const handleCreate = async (formData) => {
     try {
-      console.log(1)
-      setOpenCreate(false);
+        setUploading(true);
+        setOpenCreate(false);
+        const restaurantId = formData.get("restaurant_id");
+        fetchUploadMenu(formData, restaurantId)
     } catch (err) {
         console.log(err)
+        setOpenCreate(false);
+    } finally {
+        setUploading(false);
     }
   };
 

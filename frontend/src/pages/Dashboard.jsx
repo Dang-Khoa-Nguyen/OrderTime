@@ -90,14 +90,14 @@ export default function Dashboard() {
     };
     return(
         <div className="text-white text-center w-full h-96"> 
-            <div className="flex-2 flex flex-col justify-center items-center gap-5 h-full ">
+            <div className="flex-2 flex flex-col justify-center items-center gap-5 h-full">
                 <Introduction/>
                 <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
                 <div className="flex gap-3">
                     <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
                     <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
                 </div>
-                <div className="flex justify-center items-center w-96 h-10 gap-4 ">
+                <div className="flex justify-center items-center w-full h-10 gap-4">
                     <RestaurantSelector setRestaurantId={setRestaurantId}/>
                     <StartOrder getOrder={getOrder}/>
                     <OpenCloseButton isOpen={isOpen} handleClose={handleClose} handleOpen={handleOpen}/>

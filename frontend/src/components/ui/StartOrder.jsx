@@ -1,19 +1,19 @@
 // icon imports
-import { TiltButton } from 'react-tilt-button';
+import { FaPlay } from "react-icons/fa6";
 
 export default function StartOrder({getOrder}) {
     return(
     <div>
         <button
-            variant="solid"
-            width={250}
-            height={80}
-            radius={16}
-            surfaceColor="#2a67d1"
+            style={{ background: '#185FA5' }}
+            onMouseOver={e => e.currentTarget.style.background = '#0C447C'}
+            onMouseOut={e => e.currentTarget.style.background = '#185FA5'}
             onClick={getOrder}
-            className='w-36 h-8 border border-white rounded-lg bg-blue-500'
+            className="w-88 inline-flex items-center gap-2 px-8 py-3 rounded-xl text-[#E6F1FB] 
+            font-medium text-sm transition-transform active:scale-95"
         >
-            Start Order
+            <FaPlay/>
+            Start order
         </button>
     </div>
     )
