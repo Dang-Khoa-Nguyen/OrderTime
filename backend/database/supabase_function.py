@@ -28,7 +28,7 @@ class SupabaseFunction():
             order_parts.append(f"{qty} {item['name']}")
 
         # Make a whole sentence for the AI customers.
-        sentence = "I'd like to order " + ", ".join(order_parts)
+        sentence = "I'd like to order " + ", ".join(order_parts) + ". That's all I need. Thank you!"
 
         return {"text": sentence}
 

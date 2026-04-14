@@ -83,9 +83,10 @@ export default function Dashboard() {
         if (restaurantId === 0) {
             alert("Please choose the restaurant")
         } else {
-            const orders = await fetchOrders(restaurantId);
-            speak(orders.text);
-            setText(orders.text);
+            const res = await fetchOrders(restaurantId);
+            setText(res.text);
+            const audio = new Audio(`data:audio/mp3;base64,${res.audio}`);
+            audio.play();
         }
     };
     return(

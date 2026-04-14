@@ -1,6 +1,9 @@
 
 from flask import Blueprint
-from flask import request, jsonify
+from flask import request, jsonify, Response
+from elevenlabs.client import ElevenLabs
+import base64
+import os
 from database.supabase_client import SupabaseClient
 from database.supabase_function import SupabaseFunction
 from ai_analysist.gemini_service import GenAIService
@@ -18,6 +21,29 @@ def get_all_restaurants():
 def generate_order(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     return SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
+
+@bp.get("/speak/<int:restaurant_id>")
+def speak(restaurant_id):
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    text = SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
+
+    client = ElevenLabs(api_key=os.getenv("ELEVEN_LABS_API_KEY"))
+    audio = client.text_to_speech.convert(
+        voice_id="ieVlOqXMeMVyCmIEzKAd",
+        text=text['text'],
+        model_id="eleven_multilingual_v2",
+    )
+
+     # Convert stream → bytes
+    audio_bytes = b"".join(audio)
+
+    # Encode to base64
+    audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
+
+    return jsonify({
+        "text": text['text'],
+        "audio": audio_base64
+    })
 
 @bp.post("/<int:restaurant_id>")
 def upload_menu(restaurant_id):
