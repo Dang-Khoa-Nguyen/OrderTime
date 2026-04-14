@@ -124,18 +124,17 @@ class SupabaseFunction():
         return f"{restaurant_name}_{counter}"
 
     def upload_new_restaurant(SUPABASE_CLIENT_SERVICE, restaurant_name):
-        try:
-            unique_name = SupabaseFunction.get_unique_restaurant_name(SUPABASE_CLIENT_SERVICE,restaurant_name)
-            
-            response = (
-                SUPABASE_CLIENT_SERVICE
-                .table("restaurants")
-                .insert({"name": unique_name})
-                .select("id")
-                .single()
-                .execute()
-            )
-            return response.data["id"]
+        unique_name = SupabaseFunction.get_unique_restaurant_name(SUPABASE_CLIENT_SERVICE,restaurant_name)
         
-        except Exception as e:
-            return None
+        response = (
+            SUPABASE_CLIENT_SERVICE
+            .table("restaurant_name")
+            .insert({"name": unique_name})
+            .execute()
+        )
+        
+        if response.data:
+            return response.data[0]["id"]  # 👈 ID is returned in insert response
+        
+        return None
+            

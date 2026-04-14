@@ -21,22 +21,39 @@ def generate_order(restaurant_id):
 
 @bp.post("/<int:restaurant_id>")
 def upload_menu(restaurant_id):
-    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
-    file = request.files["file"]
-    if not file:
-        return jsonify({"Error": "Missing file"}), 500
+    try:
+        SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+        file = request.files.get("file")
+        if not file:
+            return jsonify({"Error": "Missing file"}), 500
+        
+        # If restaurant is new, add restaurant name and then add item
+        # else, add an new item to the restaurant.
+        if restaurant_id == 0:
+            # Get name and get new id of the restaurant
+            restaurant_name = request.form.get("name") 
+            new_id = SupabaseFunction.upload_new_restaurant(SUPABASE_ANON_KEY, restaurant_name)
+            
+            print(f"Restaurant name received: {restaurant_name}")
+            print(f"New ID returned: {new_id}")
+            
+            # Return error if new id is None
+            if new_id is None:
+                return jsonify({"error": "Failed to create restaurant"}), 500
+            
+            # Handle generate and add items to the specific restaurant.
+            ai_response = GenAIService.generate_image_to_json(file, new_id)
+            clean_json = clean_json_from_ai(ai_response)
+            result = SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json)
+            return jsonify({"success": result}), 200 
+        else:     
+            ai_response = GenAIService.generate_image_to_json(file, restaurant_id)
+            clean_json = clean_json_from_ai(ai_response)       
+            result = SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json)
+            return jsonify({"success": result}), 200 
     
-    if restaurant_id == 0:
-        restaurant_name = request.form.get("name") 
-        new_id = SupabaseFunction.upload_new_restaurant(SUPABASE_ANON_KEY, restaurant_name)
-        
-        if new_id == None:
-            return False
-        
-        ai_response = GenAIService.generate_image_to_json(file, new_id)
-        clean_json = clean_json_from_ai(ai_response)
-        return SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json, new_id)
-    else:     
-        ai_response = GenAIService.generate_image_to_json(file, restaurant_id)
-        clean_json = clean_json_from_ai(ai_response)       
-        return SupabaseFunction.upload_item(SUPABASE_ANON_KEY, clean_json, restaurant_id),200
+    except Exception as e:
+        print(f"❌ ERROR: {e}")  # 👈 check Flask terminal
+        import traceback
+        traceback.print_exc()   # 👈 prints full traceback
+        return jsonify({"error": str(e)}), 500

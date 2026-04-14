@@ -8,6 +8,11 @@ from api import register_blueprints
 app = Flask(__name__)
 
 CORS(app)
+CORS(app,
+    origins=["http://localhost:3000", "http://127.0.0.1:3000"], 
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],          
+    allow_headers=["Content-Type", "Authorization"]
+)
 register_blueprints(app)
 
 if __name__ == "__main__":

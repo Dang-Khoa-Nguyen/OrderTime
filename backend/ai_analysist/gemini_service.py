@@ -5,6 +5,7 @@ import sys
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 import base64
+from werkzeug.datastructures import FileStorage
 from database.supabase_function import SupabaseFunction
 from database.supabase_client import SupabaseClient
 from dotenv import load_dotenv
@@ -12,12 +13,21 @@ from dotenv import load_dotenv
 
 class GenAIService:
     @staticmethod
-    def encode_image(image_url):
-        with open(image_url, "rb") as f:
-            return base64.b64encode(f.read()).decode()
+    def encode_image(file):
+        # Case 1: File upload (FileStorage)
+        if isinstance(file, FileStorage):
+            return base64.b64encode(file.read()).decode()
+
+        # Case 2: File path (string)
+        elif isinstance(file, str):
+            with open(file, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+
+        else:
+            raise ValueError("Unsupported image type")
     
     @staticmethod
-    def generate_image_to_json(image_url, restaurant_id):
+    def generate_image_to_json(file, restaurant_id):
         load_dotenv()
 
         SUPABASE_CLIENT_ANON = SupabaseClient.get_supabase_anon()
@@ -26,7 +36,8 @@ class GenAIService:
 
         model = "gemini-3-flash-preview"
         
-        base64_image = GenAIService.encode_image(image_url)
+        file.seek(0)
+        base64_image = GenAIService.encode_image(file)
         prompt = (
             """
             You have a task to extract menu items. You must only extract exact items in the given image with name, category, price.

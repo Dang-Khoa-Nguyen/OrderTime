@@ -37,7 +37,7 @@ export async function fetchOrders(restaurantId) {
 export async function fetchUploadMenu(formData,restaurantId) {
   // Send get request to backend to get all text
   const res = await fetch(
-    `${API_URL}/${restaurantId}`,
+    `${API_URL}/orders/${restaurantId}`,
     {
       method: "POST",
       body: formData,
@@ -45,7 +45,9 @@ export async function fetchUploadMenu(formData,restaurantId) {
 
   // Verify the response
   if (!res.ok) {
-    throw new Error("Failed to fetch text");
+    const error = await res.json();
+    console.error("Server error:", error); 
+    throw new Error(error.message || "Failed to upload menu");
   }
 
   // Return the json of the response
