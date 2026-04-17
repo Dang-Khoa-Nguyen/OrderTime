@@ -18,8 +18,8 @@ export default function Dashboard() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [voiceReading, setVoiceReading] = useState("en-US");
-    const [newRate, setNewRate] = useState(0.9);
-    const [newPitch, setNewPitch] = useState(2);
+    const [newRate, setNewRate] = useState(1);
+    const [newPitch, setNewPitch] = useState(0.7);
 
     const handleOpen = () => {
         setIsOpen(true);
@@ -30,8 +30,8 @@ export default function Dashboard() {
     }
 
      const increaseTone = () => {
-        if (newPitch >= 2.5) {
-            alert("2.5 is the maximum")
+        if (newPitch >= 1) {
+            alert("1 is the maximum")
         } else {
             setNewPitch(parseFloat((newPitch + 0.1).toFixed(1)));
         }
@@ -46,38 +46,38 @@ export default function Dashboard() {
     }
 
     const increaseSpeed = () => {
-        if (newRate >= 1.5) {
-            alert("1.5 is the maximum")
+        if (newRate >= 1.2) {
+            alert("1.2 is the maximum")
         } else {
             setNewRate(parseFloat((newRate + 0.1).toFixed(1)));
         }
     }
 
     const decreaseSpeed = () => {
-        if (newRate == 0.1) {
-            alert("0.1 is the minimum")
+        if (newRate == 0.7) {
+            alert("0.7 is the minimum")
         } else {
             setNewRate(parseFloat((newRate - 0.1).toFixed(1)));
         }
     }
     console.log(restaurantId)
-    const speak = (text) => {
-        const msg = new SpeechSynthesisUtterance(text);
-        const voices = window.speechSynthesis.getVoices();
+    // const speak = (text) => {
+    //     const msg = new SpeechSynthesisUtterance(text);
+    //     const voices = window.speechSynthesis.getVoices();
 
-        // Choose voice, speed, and tone
-        msg.voice = voices.find(voice => voice.lang === voiceReading);
-        msg.rate =  newRate; 
-        msg.pitch = newPitch; 
+    //     // Choose voice, speed, and tone
+    //     msg.voice = voices.find(voice => voice.lang === voiceReading);
+    //     msg.rate =  newRate; 
+    //     msg.pitch = newPitch; 
 
-        setIsSpeaking(true)
+    //     setIsSpeaking(true)
 
-        msg.onend = () => {
-            setIsSpeaking(false);
-        }
+    //     msg.onend = () => {
+    //         setIsSpeaking(false);
+    //     }
         
-        window.speechSynthesis.speak(msg);
-    };
+    //     window.speechSynthesis.speak(msg);
+    // };
 
     const getOrder = async () => {
         if (restaurantId === 0) {

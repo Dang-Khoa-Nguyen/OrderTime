@@ -1,14 +1,32 @@
 import './App.css';
 import Dashboard from './pages/Dashboard';
+import Menu from './pages/Menu';
 import NavBar from "./components/ui/NavBar"
 
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className='h-screen bg-gray-950 font-mono '>
-      <NavBar/>
-      <Dashboard/>  
-    </div>
+    <Router>
+      <div className='h-screen bg-gray-950 font-mono '>
+        <NavBar/>
+        <Routes>
+          <Route 
+          path="/"
+          element={<Dashboard/>}
+          ></Route>
+
+          <Route 
+          path="/menu"
+          element={<Menu/>}
+          ></Route>
+        </Routes> 
+      </div>
+    </Router>
   );
 }
 
