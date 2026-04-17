@@ -18,15 +18,23 @@ export async function fetchGetRestaurants() {
 }
 
 /* This fetch GET the all restaurant with detail information. */
-export async function fetchOrders(restaurantId) {
+export async function fetchOrders(payload) {
   // Send get request to backend to get all text
-  const res = await fetch(
-    `${API_URL}/orders/speak/${restaurantId}`
-  );
+    const res = await fetch(`${API_URL}/orders/speak/${payload.restaurantId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      speed: payload.speed,
+      tone: payload.tone,
+    }),
+  });
 
-  // Verify the response
   if (!res.ok) {
-    throw new Error("Failed to fetch text");
+    const text = await res.text(); 
+    console.error("Error response:", text);
+    throw new Error("Request failed");
   }
 
   const data = await res.json();
