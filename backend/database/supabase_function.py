@@ -53,6 +53,25 @@ class SupabaseFunction():
         
         return response.data if response.data else []
     
+    def get_items(SUPABASE_CLIENT_SERVICE, restaurant_id):
+        
+        response = (
+            SUPABASE_CLIENT_SERVICE
+            .table("menu_items")
+            .select("name,price,category(category_name)")
+            .eq("restaurant_id", int(restaurant_id))
+            .execute()
+        )
+        
+        items = response.data
+        if len(items) == 0:
+            return []
+        
+        for item in items:
+            item["category"] = item.pop("category", {}).get("category_name")
+
+        return items
+    
     def add_item(SUPABASE_CLIENT_SERVICE,item):
         # Check if item already exists
         existing = (
@@ -133,8 +152,9 @@ class SupabaseFunction():
             .execute()
         )
         
+        # ID is returned in insert response
         if response.data:
-            return response.data[0]["id"]  # 👈 ID is returned in insert response
+            return response.data[0]["id"]  
         
         return None
             

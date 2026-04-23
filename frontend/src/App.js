@@ -9,10 +9,13 @@ import {
   Route
 } from "react-router-dom";
 
+import { useState } from 'react';
+
 function App() {
+
   return (
     <Router>
-      <div className='h-screen bg-gray-950 font-mono '>
+      <div className='min-h-screen font-mono bg-gray-800'>
         <NavBar/>
         <Routes>
           <Route 

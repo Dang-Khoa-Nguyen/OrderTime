@@ -20,6 +20,11 @@ def generate_order(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     return SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
 
+@bp.get("/get_items/<int:restaurant_id>")
+def get_item(restaurant_id):
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    return SupabaseFunction.get_items(SUPABASE_ANON_KEY, restaurant_id)
+
 @bp.post("/speak/<int:restaurant_id>")
 def speak(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
