@@ -15,6 +15,11 @@ def get_all_restaurants():
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     return SupabaseFunction.get_restaurants(SUPABASE_ANON_KEY)
 
+@bp.get("/get_categories")
+def get_all_categories():
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    return SupabaseFunction.get_categories(SUPABASE_ANON_KEY)
+
 @bp.get("/<int:restaurant_id>")
 def generate_order(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
@@ -73,11 +78,21 @@ def upload_menu(restaurant_id):
             return jsonify({"success": result}), 200 
     
     except Exception as e:
-        print(f"❌ ERROR: {e}")  # 👈 check Flask terminal
+        # check Flask terminal
+        print(f"ERROR: {e}") 
         import traceback
-        traceback.print_exc()   # 👈 prints full traceback
+        # prints full traceback
+        traceback.print_exc()   
         return jsonify({"error": str(e)}), 500
 
+@bp.post("/add_item")
+def add_item():
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    item = request.form
+    print(item)
+    success = SupabaseFunction.add_item(SUPABASE_ANON_KEY, item)
+    return {"success": success}
+    
 @bp.delete("/<int:restaurant_id>")
 def delete_table(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()

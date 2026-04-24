@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { fetchDeleteRestaurant, fetchRestaurantMenu } from "../api/Restaurant";
+import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem } from "../api/Restaurant";
 import useRestaurant from "../hooks/useRestaurant"
 import MenuLoader from "../components/loader/MenuLoader";
 import DeleteRestaurant from "../components/common/DeleteRestaurant";
 import AddItem from "../components/common/AddItem";
+import AddItemModel from "../components/models/AddItemModel";
 
 const menuItems = [
   { name: "Margherita Pizza", price: 12.99, category: "Main" },
@@ -17,9 +18,19 @@ export default function Menu() {
   const [items, setItems] = useState([])
   const [restaurantId, setRestaurantId] = useState(1)
   const {restaurants, loading, error} = useRestaurant();
+  const [openCreate, setOpenCreate] = useState(false);
 
   const handleDelete = async () => {
       await fetchDeleteRestaurant(restaurantId);
+  }
+
+   const handleAdd = async (formData) => {
+      const data = await fetchAddItem(formData);
+      if (data.success) {
+        // re-fetch instead of reloading the whole page
+        fetchRestaurantMenu(restaurantId).then(data => setItems(data))
+        setOpenCreate(false);
+    }
   }
   
   useEffect(() => {
@@ -56,7 +67,14 @@ export default function Menu() {
           </select>
         )}
         <DeleteRestaurant handleDelete={handleDelete}/>
-        <AddItem/>
+        <AddItem setOpenCreate={setOpenCreate}/>
+
+         {openCreate && (
+            <AddItemModel
+                onClose={() => setOpenCreate(false)}
+                onSave={handleAdd}
+            />)
+          }
       </div>
       <div className="overflow-x-auto rounded-lg border border-yellow-500">
         <table className="w-full text-sm text-left text-white">

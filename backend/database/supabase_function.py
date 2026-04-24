@@ -43,6 +43,17 @@ class SupabaseFunction():
 
         return response.data if response.data else []
     
+    def get_categories(SUPABASE_CLIENT_SERVICE):
+        # Fetch all restaurant
+        response = (
+            SUPABASE_CLIENT_SERVICE
+            .table("category")
+            .select("id, category_name")
+            .execute()
+        )
+
+        return response.data if response.data else []
+    
     def get_category_info(SUPABASE_CLIENT_SERVICE):
         response = (
             SUPABASE_CLIENT_SERVICE
@@ -77,7 +88,7 @@ class SupabaseFunction():
         existing = (
             SUPABASE_CLIENT_SERVICE
             .table("menu_items")
-            .select("id")
+            .select("*")
             .eq("restaurant_id", int(item["restaurant_id"]))
             .eq("name", item["name"])
             .execute()

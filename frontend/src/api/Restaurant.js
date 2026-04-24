@@ -18,6 +18,22 @@ export async function fetchGetRestaurants() {
 }
 
 /* This fetch GET the all restaurant with detail information. */
+export async function fetchGetCategories() {
+  // Send get request to backend to get all text
+  const res = await fetch(
+    `${API_URL}/orders/get_categories`
+  );
+
+  // Verify the response
+  if (!res.ok) {
+    throw new Error("Failed to fetch text");
+  }
+
+  // Return the json of the response
+  return res.json();
+}
+
+/* This fetch GET the all restaurant with detail information. */
 export async function fetchOrders(payload) {
   // Send get request to backend to get all text
     const res = await fetch(`${API_URL}/orders/speak/${payload.restaurantId}`, {
@@ -103,3 +119,25 @@ export async function fetchDeleteRestaurant(restaurantId) {
   // Return the json of the response
   return res.json();
 }
+
+/* This function deletes the specific restaurant with its items. */
+export async function fetchAddItem(formData) {
+  // Send get request to backend to get all text
+  const res = await fetch(
+    `${API_URL}/orders/add_item`,
+    {
+      method: "POST",
+      body: formData
+    });
+
+  // Verify the response
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Server error:", error); 
+    throw new Error(error.message || "Failed to upload menu");
+  }
+
+  // Return the json of the response
+  return res.json();
+}
+
