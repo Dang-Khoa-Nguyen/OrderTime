@@ -158,3 +158,28 @@ class SupabaseFunction():
         
         return None
             
+    
+    def delete_restaurant(SUPABASE_CLIENT_SERVICE, restaurant_id):
+        response_items = (
+             SUPABASE_CLIENT_SERVICE
+            .table("menu_items")
+            .delete()
+            .eq("restaurant_id", int(restaurant_id))
+            .execute()
+        )
+        
+        if len(response_items.data) == 0:
+            return False
+        
+        response_restaurant = (
+            SUPABASE_CLIENT_SERVICE
+            .table("restaurant_name")
+            .delete()
+            .eq("id", int(restaurant_id))
+            .execute()
+        )
+        
+        if len(response_restaurant.data) == 0:
+            return False
+        
+        return True

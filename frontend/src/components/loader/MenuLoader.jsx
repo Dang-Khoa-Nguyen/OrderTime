@@ -1,6 +1,6 @@
 export default function MenuLoader() {
   return (
-     <div className="p-6 w-full mx-auto animate-pulse">
+     <div className="p-6 w-5/6 mx-auto animate-pulse">
       {/* Title skeleton */}
       <div className="h-8 bg-gray-700 rounded w-1/3 mx-auto mb-4" />
 
@@ -22,6 +22,7 @@ export default function MenuLoader() {
               <th className="px-6 py-3">Item Name</th>
               <th className="px-6 py-3">Price</th>
               <th className="px-6 py-3">Category</th>
+              <th className="px-6 py-3">Actions</th>
             </tr>
           </thead>
 
@@ -44,6 +45,10 @@ export default function MenuLoader() {
                 {/* Category badge */}
                 <td className="px-6 py-3">
                   <div className="h-5 bg-gray-700 rounded-full w-14" />
+                </td>
+                {/* Category badge */}
+                <td className="px-6 py-3">
+                  <div className="h-5 bg-gray-700 rounded-full w-16" />
                 </td>
               </tr>
             ))}

@@ -77,3 +77,9 @@ def upload_menu(restaurant_id):
         import traceback
         traceback.print_exc()   # 👈 prints full traceback
         return jsonify({"error": str(e)}), 500
+
+@bp.delete("/<int:restaurant_id>")
+def delete_table(restaurant_id):
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    success =  SupabaseFunction.delete_restaurant(SUPABASE_ANON_KEY,restaurant_id)
+    return {"success": success} 
