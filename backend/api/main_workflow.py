@@ -98,3 +98,9 @@ def delete_table(restaurant_id):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     success =  SupabaseFunction.delete_restaurant(SUPABASE_ANON_KEY,restaurant_id)
     return {"success": success} 
+
+@bp.delete("/delete_item/<int:item_id>")
+def delete_an_item(item_id):
+    SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
+    success =  SupabaseFunction.delete_item(SUPABASE_ANON_KEY,item_id)
+    return {"success": success} 

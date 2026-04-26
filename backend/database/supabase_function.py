@@ -69,7 +69,7 @@ class SupabaseFunction():
         response = (
             SUPABASE_CLIENT_SERVICE
             .table("menu_items")
-            .select("name,price,category(category_name)")
+            .select("id,name,price,category(category_name)")
             .eq("restaurant_id", int(restaurant_id))
             .execute()
         )
@@ -191,6 +191,20 @@ class SupabaseFunction():
         )
         
         if len(response_restaurant.data) == 0:
+            return False
+        
+        return True
+    
+    def delete_item(SUPABASE_CLIENT_SERVICE, item_id):
+        response_items = (
+             SUPABASE_CLIENT_SERVICE
+            .table("menu_items")
+            .delete()
+            .eq("id", int(item_id))
+            .execute()
+        )
+        
+        if len(response_items.data) == 0:
             return False
         
         return True

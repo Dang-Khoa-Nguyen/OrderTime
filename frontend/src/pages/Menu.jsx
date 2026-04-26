@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem } from "../api/Restaurant";
+import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem, fetchDeleteItem } from "../api/Restaurant";
 import useRestaurant from "../hooks/useRestaurant"
 import MenuLoader from "../components/loader/MenuLoader";
 import DeleteRestaurant from "../components/common/DeleteRestaurant";
@@ -16,7 +16,7 @@ const menuItems = [
 
 export default function Menu() {
   const [items, setItems] = useState([])
-  const [restaurantId, setRestaurantId] = useState(1)
+  const [restaurantId, setRestaurantId] = useState(0)
   const {restaurants, loading, error} = useRestaurant();
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Menu() {
       await fetchDeleteRestaurant(restaurantId);
   }
 
-   const handleAdd = async (formData) => {
+  const handleAdd = async (formData) => {
       const data = await fetchAddItem(formData);
       if (data.success) {
         // re-fetch instead of reloading the whole page
@@ -32,10 +32,17 @@ export default function Menu() {
         setOpenCreate(false);
     }
   }
+
+  const handleDeleteItem = async (itemId) => {
+    console.log(itemId)
+    const data = await fetchDeleteItem(itemId)
+    if (data.success) {
+      fetchRestaurantMenu(restaurantId).then(data => setItems(data))
+    }
+  }
   
   useEffect(() => {
       fetchRestaurantMenu(restaurantId).then(data => setItems(data))
-      console.log(restaurantId)
   }, [restaurantId])
 
   if (error) {
@@ -61,6 +68,7 @@ export default function Menu() {
             onChange={(e) => setRestaurantId(e.target.value)}
             className="mb-4 px-3 py-2 rounded-md bg-gray-800 text-white 
             border border-gray-200 focus:outline-none text-sm">
+              <option key={0} value={0}> Select restaurant </option>
               {restaurants.map((res) => (
                   <option key={res.id} value={res.id}>{res.name}</option>
               ))}
@@ -111,7 +119,7 @@ export default function Menu() {
                 {/*TODO: Do the Edit and Delete*/}
                 <td className="px-6 py-3 gap-3 flex">
                   <button> Edit </button>
-                  <button> Delete </button>
+                  <button onClick={() => handleDeleteItem(item.id)}> Delete </button>
                 </td>
               </tr>
             ))}
