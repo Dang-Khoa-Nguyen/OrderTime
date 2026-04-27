@@ -7,12 +7,12 @@ export default function RestaurantSelector({setRestaurantId}) {
         return (<div> It's error </div>)
     }
     return(
-        <div className="relative w-80">
+        <div className="relative w-full">
             {loading ? (
                 <select
                     disabled
-                    className="w-full h-11 pl-3 pr-10 bg-gray-100 border border-gray-200 
-                    rounded-xl text-sm text-gray-400 appearance-none cursor-not-allowed opacity-60"
+                    className="pl-3 pr-10 bg-gray-100 border border-gray-200 
+                    rounded-xl text-xs text-gray-400 appearance-none cursor-not-allowed opacity-60"
                 >
                     <option>Loading...</option>
                 </select>
@@ -20,7 +20,7 @@ export default function RestaurantSelector({setRestaurantId}) {
                 <select
                     onChange={(e) => setRestaurantId(e.target.value)}
                     className="w-full h-11 pl-3 pr-10 bg-white border border-gray-200 
-                    rounded-xl text-sm text-gray-800 appearance-none cursor-pointer
+                    rounded-xl text-xs text-gray-800 appearance-none cursor-pointer
                     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
                     hover:border-gray-300 transition-colors duration-150"
                 >

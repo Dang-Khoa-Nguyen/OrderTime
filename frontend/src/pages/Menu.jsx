@@ -6,6 +6,10 @@ import DeleteRestaurant from "../components/common/DeleteRestaurant";
 import AddItem from "../components/common/AddItem";
 import AddItemModel from "../components/models/AddItemModel";
 
+// Import icons
+import { MdDelete } from "react-icons/md";
+import { MdModeEdit } from "react-icons/md";
+
 const menuItems = [
   { name: "Margherita Pizza", price: 12.99, category: "Main" },
   { name: "Caesar Salad", price: 8.50, category: "Starter" },
@@ -118,8 +122,9 @@ export default function Menu() {
                 </td>
                 {/*TODO: Do the Edit and Delete*/}
                 <td className="px-6 py-3 gap-3 flex">
-                  <button> Edit </button>
-                  <button onClick={() => handleDeleteItem(item.id)}> Delete </button>
+                  <button className="text-blue-500 text-lg"> <MdModeEdit/> </button>
+                  <button className="text-red-500 text-lg" 
+                  onClick={() => handleDeleteItem(item.id)}> <MdDelete/> </button>
                 </td>
               </tr>
             ))}
