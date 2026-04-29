@@ -1,6 +1,8 @@
+fastapi
+uvicorn
+python-multipart
 python-dotenv
 supabase
-flask
-flask-cors
-openai>=1.0.0
 google-genai>=1.0.0
+elevenlabs
+httpx
