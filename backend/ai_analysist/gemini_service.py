@@ -5,7 +5,6 @@ import sys
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 import base64
-from werkzeug.datastructures import FileStorage
 from database.supabase_function import SupabaseFunction
 from database.supabase_client import SupabaseClient
 from dotenv import load_dotenv
