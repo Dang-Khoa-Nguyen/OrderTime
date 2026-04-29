@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from "react";
-import { FiPlus, FiFile, FiX } from "react-icons/fi";
+import { useState } from "react";
 import useRestaurant from "../../hooks/useRestaurant";
 import useCategories from "../../hooks/useCategory";
 
@@ -34,13 +33,29 @@ export default function AddItemModel({ onClose, onSave }) {
             return;
         }
         const formData = new FormData();
+        setUploading(true)
         formData.append("restaurant_id", restaurantId);
         formData.append("name", name);
         formData.append("price", price)
         formData.append("category_id", categoryId);
         onSave(formData);
+        setUploading(false)
     };
 
+  if (uploading) {
+    <div>
+      it's uploading
+    </div>
+  }
+
+  if (error) {
+    <div> it's error </div>
+  }
+
+  if (categoryError) {
+    <div> category error </div>
+  }
+  
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 text-black">
       <form
@@ -53,7 +68,12 @@ export default function AddItemModel({ onClose, onSave }) {
             Restaurants
           </label>
 
-          <select
+          {loading ? (
+            <div>
+              it's loading
+            </div>
+          ) : (
+                      <select
             value={restaurantId}
             onChange={(e) => setRestaurantId(e.target.value)}
             className="w-full border p-2 mb-4 bg-white rounded-lg"
@@ -64,6 +84,7 @@ export default function AddItemModel({ onClose, onSave }) {
               </option>
             ))}
           </select>
+          )}
         </div>
         <div className={`flex flex-col`}>
           <label className="text-xs text-gray-500 font-semibold mb-1">
@@ -95,8 +116,13 @@ export default function AddItemModel({ onClose, onSave }) {
           <label className="text-xs text-gray-500 font-semibold mb-1">
             Categories
           </label>
-
-          <select
+          
+          {categoryLoading ? (
+            <div>
+              Category loading  
+            </div>
+          ) : (
+                      <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             className="w-full border p-2 mb-4 bg-white rounded-lg text-gray-700"
@@ -108,6 +134,7 @@ export default function AddItemModel({ onClose, onSave }) {
               </option>
             ))}
           </select>
+          )}
         </div>
 
         <div className="flex justify-end gap-3 mt-5">

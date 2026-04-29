@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { FiPlus, FiFile, FiX } from "react-icons/fi";
 import useRestaurant from "../../hooks/useRestaurant";
 
@@ -40,11 +40,29 @@ export default function AddModal({ onClose, onSave }) {
         }
         const formData = new FormData();
         console.log(selectedFile)
+        setUploading(true)
         formData.append("restaurant_id", restaurantId)
         formData.append("name", name);
         formData.append("file", fileInputRef.current);
         onSave(formData);
+        setUploading(false)
     };
+
+    if (loading) {
+        return(
+            <div>
+                it's loading
+            </div>
+        )
+    }
+
+    if (error) {
+        return(
+            <div>
+                it's error
+            </div>
+        )
+    }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 text-black">
@@ -84,7 +102,7 @@ export default function AddModal({ onClose, onSave }) {
           value={name}
           disabled={restaurantId !== "0"}
           onChange={(e) => setName(e.target.value)}
-          className={`w-full border p-2 mb-4 rounded-lg ${restaurantId=="0" ? "" : "cursor-not-allowed"}`}
+          className={`w-full border p-2 mb-4 rounded-lg ${restaurantId==="0" ? "" : "cursor-not-allowed"}`}
           maxLength="100"
           />
         </div>

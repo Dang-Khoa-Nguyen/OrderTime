@@ -19,7 +19,6 @@ export default function Dashboard() {
     const [text, setText] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
-    const [voiceReading, setVoiceReading] = useState("en-US");
     const [newRate, setNewRate] = useState(1);
     const [newPitch, setNewPitch] = useState(0.7);
 
@@ -40,7 +39,7 @@ export default function Dashboard() {
     }
 
     const decreaseTone = () => {
-        if (newPitch == 0.1) {
+        if (newPitch === 0.1) {
             alert("0.1 is the minimum")
         } else {
             setNewPitch(parseFloat((newPitch - 0.1).toFixed(1)));
@@ -56,7 +55,7 @@ export default function Dashboard() {
     }
 
     const decreaseSpeed = () => {
-        if (newRate == 0.7) {
+        if (newRate === 0.7) {
             alert("0.7 is the minimum")
         } else {
             setNewRate(parseFloat((newRate - 0.1).toFixed(1)));
@@ -88,6 +87,7 @@ export default function Dashboard() {
             const res = await fetchOrders({restaurantId: restaurantId, speed: newRate, tone: newPitch});
             setText(res.text);
             const audio = new Audio(`data:audio/mp3;base64,${res.audio}`);
+            setIsSpeaking(true)
             audio.play();
         }
     };

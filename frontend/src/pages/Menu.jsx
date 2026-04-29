@@ -10,14 +10,6 @@ import AddItemModel from "../components/models/AddItemModel";
 import { MdDelete } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
 
-const menuItems = [
-  { name: "Margherita Pizza", price: 12.99, category: "Main" },
-  { name: "Caesar Salad", price: 8.50, category: "Starter" },
-  { name: "Grilled Chicken", price: 15.99, category: "Main" },
-  { name: "Chocolate Lava Cake", price: 6.99, category: "Dessert" },
-  { name: "Garlic Bread", price: 4.50, category: "Starter" },
-];
-
 export default function Menu() {
   const [items, setItems] = useState([])
   const [restaurantId, setRestaurantId] = useState(0)

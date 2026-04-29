@@ -3,7 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import { BiSolidFoodMenu } from "react-icons/bi";
 import { IoLogoGameControllerB } from "react-icons/io";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import AddModal from "../models/AddModel";
 import { fetchUploadMenu } from "../../api/Restaurant";
 import {Link} from "react-router-dom";
@@ -25,6 +25,12 @@ export default function NavBar() {
     }
   };
 
+    if (uploading) {   
+        return(
+        <div>
+            It's loading
+        </div>);
+    }
     return(
     <div className="flex justify-between items-center text-white">
         <h1 className="text-white text-4xl px-4"> OrderTime</h1>
