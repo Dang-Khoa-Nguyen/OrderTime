@@ -14,11 +14,15 @@ from dotenv import load_dotenv
 class GenAIService:
     @staticmethod
     def encode_image(file):
-        # Case 1: File upload (FileStorage)
-        if isinstance(file, FileStorage):
+        # Case 1: raw bytes (FastAPI UploadFile already read)
+        if isinstance(file, bytes):
+            return base64.b64encode(file).decode()
+
+        # Case 2: Flask FileStorage
+        elif isinstance(file, FileStorage):
             return base64.b64encode(file.read()).decode()
 
-        # Case 2: File path (string)
+        # Case 3: file path string
         elif isinstance(file, str):
             with open(file, "rb") as f:
                 return base64.b64encode(f.read()).decode()
@@ -36,7 +40,6 @@ class GenAIService:
 
         model = "gemini-3-flash-preview"
         
-        file.seek(0)
         base64_image = GenAIService.encode_image(file)
         prompt = (
             """

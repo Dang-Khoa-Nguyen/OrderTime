@@ -1,5 +1,5 @@
 // The URL link
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 /* This fetch GET the all restaurant with detail information. */
 export async function fetchGetRestaurants() {
