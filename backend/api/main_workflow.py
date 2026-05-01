@@ -57,6 +57,18 @@ async def add_item(request: Request):
         print(f"ERROR: {e}")
         return JSONResponse({"error": str(e)}, status_code=500)
 
+@router.post("/edit_item")
+async def edit_item(request: Request):
+    try:
+        SUPABASE_ANON_KEY = SupabaseClient.get_supabase_anon()
+        item = await request.form()
+        print(dict(item))  
+        success = SupabaseFunction.edit_item(SUPABASE_ANON_KEY, item)
+        return {"success": success}
+    except Exception as e:
+        print(f"ERROR: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+    
 @router.post("/{restaurant_id}")
 async def upload_menu(
     restaurant_id: int,

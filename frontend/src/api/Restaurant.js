@@ -161,3 +161,23 @@ export async function fetchAddItem(formData) {
   return res.json();
 }
 
+/* This fetch update the information of the specific item */
+export async function fetchEditItem(formData) {
+  // Send get request to backend to get all text
+  const res = await fetch(
+    `${API_URL}/orders/edit_item`,
+    {
+      method: "POST",
+      body: formData,
+    });
+
+  // Verify the response
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Server error:", error); 
+    throw new Error(error.message || "Failed to upload menu");
+  }
+
+  // Return the json of the response
+  return res.json();
+}

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem, fetchDeleteItem } from "../api/Restaurant";
+import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem, fetchDeleteItem, fetchEditItem } from "../api/Restaurant";
 import useRestaurant from "../hooks/useRestaurant"
 import MenuLoader from "../components/loader/MenuLoader";
 import DeleteRestaurant from "../components/common/DeleteRestaurant";
 import AddItem from "../components/common/AddItem";
 import AddItemModel from "../components/models/AddItemModel";
+import EditItemModel from "../components/models/EditItemModel";
 
 // Import icons
 import { MdDelete } from "react-icons/md";
@@ -15,6 +16,7 @@ export default function Menu() {
   const [restaurantId, setRestaurantId] = useState(0)
   const {restaurants, loading, error} = useRestaurant();
   const [openCreate, setOpenCreate] = useState(false);
+  const [editItem, setEditItem] = useState(null) 
 
   const handleDelete = async () => {
       await fetchDeleteRestaurant(restaurantId);
@@ -28,7 +30,7 @@ export default function Menu() {
         setOpenCreate(false);
     }
   }
-
+  
   const handleDeleteItem = async (itemId) => {
     console.log(itemId)
     const data = await fetchDeleteItem(itemId)
@@ -37,6 +39,14 @@ export default function Menu() {
     }
   }
   
+  const handleEdit = async (formData) => {
+    const data = await fetchEditItem(formData)
+    if (data.success) {
+      fetchRestaurantMenu(restaurantId).then(data => setItems(data))
+      setEditItem(null)  
+    }
+  }
+
   useEffect(() => {
       fetchRestaurantMenu(restaurantId).then(data => setItems(data))
   }, [restaurantId])
@@ -114,15 +124,24 @@ export default function Menu() {
                 </td>
                 {/*TODO: Do the Edit and Delete*/}
                 <td className="px-6 py-3 gap-3 flex">
-                  <button className="text-blue-500 text-lg"> <MdModeEdit/> </button>
+                  <button 
+                  className="text-blue-500 text-lg"
+                  onClick={() => setEditItem(item)} > <MdModeEdit/> </button>
                   <button className="text-red-500 text-lg" 
                   onClick={() => handleDeleteItem(item.id)}> <MdDelete/> </button>
                 </td>
               </tr>
             ))}
           </tbody>
-
         </table>
+        
+        {editItem && (
+          <EditItemModel
+            item={editItem}
+            onClose={() => setEditItem(null)}
+            onSave={handleEdit}
+          />
+        )}
       </div>
     </div>
   );

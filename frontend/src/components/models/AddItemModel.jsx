@@ -122,7 +122,7 @@ export default function AddItemModel({ onClose, onSave }) {
               Category loading  
             </div>
           ) : (
-                      <select
+            <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             className="w-full border p-2 mb-4 bg-white rounded-lg text-gray-700"

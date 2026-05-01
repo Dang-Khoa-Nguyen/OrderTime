@@ -69,7 +69,7 @@ class SupabaseFunction():
         response = (
             SUPABASE_CLIENT_SERVICE
             .table("menu_items")
-            .select("id,name,price,category(category_name)")
+            .select("id,name,price,category(category_name),category_id")
             .eq("restaurant_id", int(restaurant_id))
             .execute()
         )
@@ -112,6 +112,35 @@ class SupabaseFunction():
             )
         return True
 
+    def edit_item(SUPABASE_CLIENT_SERVICE,item):
+        # Check if item already exists
+        existing = (
+            SUPABASE_CLIENT_SERVICE
+            .table("menu_items")
+            .select("*")
+            .eq("id", int(item["id"]))
+            .execute()
+        )
+        print(existing.data)
+         # If not exists, return false
+        if not existing.data:
+            return False
+        
+        # Edit the menu.
+        response = (
+                SUPABASE_CLIENT_SERVICE
+                .table("menu_items")
+                .update({
+                "name": item["name"],
+                "category_id": item["category"],
+                "price": float(item["price"]),
+                })
+                .eq("id", int(item["id"]))
+                .execute()
+            )
+        return True
+        
+        
     def upload_item(SUPABASE_CLIENT_SERVICE, items):
         try:
             for item in items:
