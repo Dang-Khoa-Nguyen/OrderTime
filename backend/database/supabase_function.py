@@ -21,16 +21,18 @@ class SupabaseFunction():
         chosen = random.sample(items, count)
 
         order_parts = []
+        answers = []
 
         # Get random quantity for each item.
         for item in chosen:
             qty = random.randint(1, 3) 
             order_parts.append(f"{qty} {item['name']}")
+            answers.append({"qty": qty, "item": item['name'] })
 
         # Make a whole sentence for the AI customers.
         sentence = "I'd like to order " + ", ".join(order_parts) + ". That's all I need. Thank you!"
 
-        return {"text": sentence}
+        return {"text": sentence, "answers": answers}
 
     def get_restaurants(SUPABASE_CLIENT_SERVICE):
         # Fetch all restaurant

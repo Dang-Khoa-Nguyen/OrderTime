@@ -7,4 +7,4 @@ from database.supabase_client import SupabaseClient
 
 if __name__ == "__main__":
     SUPABASE_CLIENT_ANON = SupabaseClient.get_supabase_anon()
-    print(SupabaseFunction.generate_random_order(SUPABASE_CLIENT_ANON,1))
+    print(SupabaseFunction.generate_random_order(SUPABASE_CLIENT_ANON,2))

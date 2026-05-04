@@ -7,8 +7,9 @@ import SpeedController from "../components/controllers/SpeedController";
 
 // icon imports
 import { RiSpeakFill } from "react-icons/ri";
-import { fetchOrders } from "../api/Restaurant";
-import {useState} from "react";
+import { CiCircleCheck } from "react-icons/ci";
+import { fetchCheckAnswer, fetchOrders } from "../api/Restaurant";
+import {use, useState} from "react";
 import AnswerBox from "../components/ui/AnswerBox";
 import OpenCloseButton from "../components/ui/OpenCloseButton";
 import UserInputBox from "../components/ui/UserInputBox";
@@ -24,11 +25,16 @@ export default function Dashboard() {
     const [orders, setOrders] = useState([])
     const [qty, setQty] = useState(1)
     const [answer, setAnswer] = useState("")
-    console.log(answer)
+    const [result, setResult] = useState([])
+    const [overallScore, setOverallScore] = useState(0);
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    console.log(result)
     console.log(orders)
+
     const handleAddOrder = () => {
     if (!answer.trim()) return
-    setOrders(prev => [...prev, { qty, item: answer, id: Date.now() }])
+    setOrders(prev => [...prev, { qty: qty, item: answer, id: Date.now() }])
     setAnswer("")
     setQty(1)
     }
@@ -99,13 +105,26 @@ export default function Dashboard() {
         if (restaurantId === 0) {
             alert("Please choose the restaurant")
         } else {
-            const res = await fetchOrders({restaurantId: restaurantId, speed: newRate, tone: newPitch});
+            const res = await fetchOrders({restaurantId: restaurantId});
+            setIsSubmit(false)
             setText(res.text);
-            const audio = new Audio(`data:audio/mp3;base64,${res.audio}`);
+            setResult(res.answers);
+            // const audio = new Audio(`data:audio/mp3;base64,${res.audio}`);
             setIsSpeaking(true)
-            audio.play();
+            // audio.play();
+            setIsSpeaking(false)
+            setOrders([])
         }
     };
+
+    const handleSubmit = async () => {
+        setIsSubmit(false)
+        const data = await fetchCheckAnswer(orders, result)
+        setOverallScore(data.overallScore)
+        setIsSubmit(true)
+    }
+
+
     return(
         <div className="text-white text-center min-h-screen w-full">
             <div className="flex justify-center items-center">
@@ -164,10 +183,28 @@ export default function Dashboard() {
                     )}
                     </div>
                 </div>
+                <div className="w-5/6 mb-3">
+  <div className="flex justify-end items-center gap-3">
+    
+    {isSubmit && (
+      <div className={`flex items-center gap-1 text-sm font-medium px-3 py-1.5 rounded-full ${
+        overallScore >= 80 ? "bg-green-900/50 text-green-400" :
+        overallScore >= 50 ? "bg-yellow-900/50 text-yellow-400" :
+        "bg-red-900/50 text-red-400"
+      }`}>
+        <CiCircleCheck className="text-lg"/>
+        {overallScore}%
+      </div>
+    )}
 
-                <div className="flex justify-center w-full">
-                    <button className="bg-blue-600 rounded-lg px-2 py-2 text-sm w-5/6">Submit</button>
-                </div>
+    <button
+      className="bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all rounded-lg px-4 py-2 text-sm font-medium"
+      onClick={handleSubmit}
+    >
+      Submit
+    </button>
+  </div>
+</div>
                 </div>
             </div>
         </div>

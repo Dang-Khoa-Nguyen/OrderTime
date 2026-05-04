@@ -8,6 +8,7 @@ from database.supabase_function import SupabaseFunction
 from ai_analysist.gemini_service import GenAIService
 from ai_analysist.eleven_service import ElevenService
 from helpers.clean_ai_res import clean_json_from_ai
+from helpers.check_answers import CheckAnswer
 
 # The URL for the api to connect
 router = APIRouter(prefix="/orders")
@@ -36,14 +37,23 @@ def get_item(restaurant_id: int):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     return SupabaseFunction.get_items(SUPABASE_ANON_KEY, restaurant_id)
 
+@router.post("/check_answer")
+async def check_answer(request: Request):
+    data = await request.json()
+    user_orders = data.get("answer")
+    result_orders = data.get("result")
+    print(data)
+    result = CheckAnswer.compare_orders(user_orders, result_orders)
+    return result
+
 @router.post("/speak/{restaurant_id}")
-async def speak(restaurant_id: int,  data: SpeakRequest):
+async def speak(restaurant_id: int):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     text = SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
-    speed = data.get("speed")
-    tone = data.get("tone")
-    audio_base64 = ElevenService.generate_voice(text, speed, tone)
-    return {"text": text['text'], "audio": audio_base64}
+    # speed = data.get("speed")
+    # tone = data.get("tone")
+    # audio_base64 = ElevenService.generate_voice(text, speed, tone)
+    return {"text": text['text'], "answers": text['answers']}
 
 @router.post("/add_item")
 async def add_item(request: Request):

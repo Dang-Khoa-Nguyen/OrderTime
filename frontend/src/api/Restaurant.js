@@ -79,6 +79,28 @@ export async function fetchRestaurantMenu(restaurantId) {
   return res.json();
 }
 
+/* This fetch POST the user input and result to check the percentage correct. */
+export async function fetchCheckAnswer(answer, result) {
+  // Send get request to backend to get all text
+  const res = await fetch(
+    `${API_URL}/orders/check_answer`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ answer, result })
+    });
+
+  // Verify the response
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Server error:", error); 
+    throw new Error(error.message || "Failed to submit answer");
+  }
+
+  // Return the json of the response
+  return res.json();
+}
+
 /* This fetch GET the all restaurant with detail information. */
 export async function fetchUploadMenu(formData,restaurantId) {
   // Send get request to backend to get all text
