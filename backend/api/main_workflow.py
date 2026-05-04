@@ -47,13 +47,13 @@ async def check_answer(request: Request):
     return result
 
 @router.post("/speak/{restaurant_id}")
-async def speak(restaurant_id: int):
+async def speak(restaurant_id: int,  data: SpeakRequest):
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
     text = SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
-    # speed = data.get("speed")
-    # tone = data.get("tone")
-    # audio_base64 = ElevenService.generate_voice(text, speed, tone)
-    return {"text": text['text'], "answers": text['answers']}
+    speed = data.speed
+    tone = data.tone
+    audio_base64 = ElevenService.generate_voice(text, speed, tone)
+    return {"text": text['text'], "audio": audio_base64, "answers": text['answers']}
 
 @router.post("/add_item")
 async def add_item(request: Request):

@@ -9,11 +9,12 @@ import SpeedController from "../components/controllers/SpeedController";
 import { RiSpeakFill } from "react-icons/ri";
 import { CiCircleCheck } from "react-icons/ci";
 import { fetchCheckAnswer, fetchOrders } from "../api/Restaurant";
-import {use, useState} from "react";
+import {useState} from "react";
 import AnswerBox from "../components/ui/AnswerBox";
 import OpenCloseButton from "../components/ui/OpenCloseButton";
 import UserInputBox from "../components/ui/UserInputBox";
 import AddAnswerBox from "../components/common/AddAnswerBox";
+import ReplayOrder from "../components/ui/ReplayOrder";
 
 export default function Dashboard() {
     const [restaurantId, setRestaurantId] = useState(0);
@@ -28,6 +29,8 @@ export default function Dashboard() {
     const [result, setResult] = useState([])
     const [overallScore, setOverallScore] = useState(0);
     const [isSubmit, setIsSubmit] = useState(false);
+    const [audio, setAudio] = useState(null)
+    const [isOrder, setIsOrder] = useState(false);
 
     console.log(result)
     console.log(orders)
@@ -104,18 +107,28 @@ export default function Dashboard() {
     const getOrder = async () => {
         if (restaurantId === 0) {
             alert("Please choose the restaurant")
-        } else {
-            const res = await fetchOrders({restaurantId: restaurantId});
-            setIsSubmit(false)
-            setText(res.text);
-            setResult(res.answers);
-            // const audio = new Audio(`data:audio/mp3;base64,${res.audio}`);
-            setIsSpeaking(true)
-            // audio.play();
-            setIsSpeaking(false)
-            setOrders([])
+            return  // early return instead of else block
         }
+
+        const res = await fetchOrders({restaurantId: restaurantId, speed: newRate, tone: newPitch});
+        setText(res.text)
+        setResult(res.answers)
+        setOrders([])
+        setIsSubmit(false)
+        setIsOrder(true)
+
+        const newAudio = new Audio(`data:audio/mp3;base64,${res.audio}`)
+        setAudio(newAudio)
+        setIsSpeaking(true)
+        newAudio.play()
+        newAudio.onended = () => setIsSpeaking(false)
     };
+
+    const handleReplay = () => {
+        if (!audio) return
+        audio.currentTime = 0  // rewind to start
+        audio.play()
+    }
 
     const handleSubmit = async () => {
         setIsSubmit(false)
@@ -143,6 +156,9 @@ export default function Dashboard() {
                     <div className="flex justify-between items-center h-10 w-5/6 gap-4">
                         <StartOrder getOrder={getOrder}/>
                         <OpenCloseButton isOpen={isOpen} handleClose={handleClose} handleOpen={handleOpen}/>
+                        {isOrder && (
+                            <ReplayOrder handleReplay={handleReplay}/>
+                        )}
                     </div>
                     <AnswerBox text={text} isOpen={isOpen}/>
                 </div>
