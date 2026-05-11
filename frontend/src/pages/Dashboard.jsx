@@ -148,7 +148,7 @@ export default function Dashboard() {
                     <div className="font-grotesk text-xl"> Simulation Panel </div>
                     <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
                     <div className="w-5/6">
-                        <p className="text-xs text-gray-400 text-left italic mb-2">Start by adjusting how fast and clear the voice speaks.</p>
+                        <p className="text-xs text-gray-400 text-left italic mb-2"> Adjust the voice you would like to face.</p>
                         <div className="w-full flex gap-3"> 
                             <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
                             <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
@@ -169,9 +169,18 @@ export default function Dashboard() {
                         )}
                     </div>
                     <AnswerBox text={text} isOpen={isOpen}/>
+                    <div className="w-5/6 bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 mb-3 text-xs text-gray-300 text-left space-y-1">
+                        <p>① Set your preferred <span className="text-white font-medium">speed</span> and <span className="text-white font-medium">voice pitch</span>. (optional)</p>
+                        <p>② Select a <span className="text-white font-medium">restaurant</span> from the dropdown. (complusory)</p>
+                        <p>③ Press <span className="text-white font-medium">Start Order</span> to hear the customer speak.</p>
+                        <p>④ Use <span className="text-white font-medium">Replay</span> if you missed something. (Appear after start ordering)</p> 
+                        <p>⑤ Head to the <span className="text-white font-medium">Answer Panel</span> below to write your orders.</p>
+                        <p>⑥ Add an order with name and quantity to the <span className="text-white font-medium">Order List </span>.</p>
+                        <p>⑦ When done, press <span className="text-white font-medium">Submit</span> to see your score.</p>                 
+                    </div>           
                 </div>
             </div>
-
+                        
             <div className="flex justify-center my-5">
                 <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg">
                 <div className="text-center text-xl font-grotesk font-semibold"> Answer Panel </div>
