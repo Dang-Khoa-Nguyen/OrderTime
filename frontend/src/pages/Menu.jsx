@@ -59,7 +59,7 @@ export default function Menu() {
 
   return (
     <div className="p-6 w-5/6 mx-auto">
-      <h2 className="font-semibold text-center mb-4 text-3xl font-manrope text-white/70 -mt-3">Menu Restaurants </h2>
+      <h2 className="flex items-center justify-center h-20 font-grotesk text-center mb-4 text-3xl font-manrope text-white -mt-3">Menu Restaurants </h2>
 
       <div className="flex gap-5">
       {loading ? (

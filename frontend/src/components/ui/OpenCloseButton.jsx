@@ -9,7 +9,7 @@ export default function OpenCloseButton({isOpen, handleOpen, handleClose}) {
             className="w-full flex justify-center items-center gap-2 px-8 py-3 rounded-xl text-white bg-rose-500
             hover:bg-rose-700 font-medium text-xs transition-transform active:scale-95"
         >
-            Close
+            Close Answer
         </button>
         ) : (
         <button
@@ -17,7 +17,7 @@ export default function OpenCloseButton({isOpen, handleOpen, handleClose}) {
             className="w-full flex justify-center items-center gap-2 px-8 py-3 rounded-xl text-white bg-green-500
             hover:bg-green-700 font-medium text-xs transition-transform active:scale-95"
         >
-            Open
+            Open Answer
         </button>
         
         )}

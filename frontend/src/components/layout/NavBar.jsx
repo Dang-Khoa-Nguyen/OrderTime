@@ -32,7 +32,7 @@ export default function NavBar() {
         </div>);
     }
     return(
-    <div className="flex justify-between items-center text-white">
+    <div className="flex justify-between items-center text-white font-manrope">
         <h1 className="text-white text-4xl px-4"> OrderTime</h1>
         <div className="flex items-center gap-5">
             <Link to="/" className="flex gap-2 px-2">

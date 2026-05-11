@@ -16,7 +16,11 @@ router = APIRouter(prefix="/orders")
 class SpeakRequest(BaseModel):
     speed: float
     tone: float
-    
+
+@router.get("/")
+def init():
+    return {"success": True}
+
 @router.get("/get_restaurants")
 def get_all_restaurants():
     SUPABASE_ANON_KEY= SupabaseClient.get_supabase_anon()
@@ -52,7 +56,7 @@ async def speak(restaurant_id: int,  data: SpeakRequest):
     text = SupabaseFunction.generate_random_order(SUPABASE_ANON_KEY,restaurant_id)
     speed = data.speed
     tone = data.tone
-    audio_base64 = ElevenService.generate_voice(text, speed, tone)
+    audio_base64 = ElevenService.generate_mock_voice(text,speed,tone)
     return {"text": text['text'], "audio": audio_base64, "answers": text['answers']}
 
 @router.post("/add_item")

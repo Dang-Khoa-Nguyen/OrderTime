@@ -8,6 +8,9 @@ module.exports = {
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],
         mono: ["Roboto Mono", "monospace"],
+        bebas: ['"Bebas Neue"', 'sans-serif'],
+        grotesk: ['"Space Grotesk"','sans-serif'],
+        orbit: ["Orbitron",'sans-serif']
       },
       keyframes: {
         speaking: {

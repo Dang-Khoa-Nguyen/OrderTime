@@ -1,7 +1,7 @@
 import './App.css';
 import Dashboard from './pages/Dashboard';
 import Menu from './pages/Menu';
-import NavBar from "./components/ui/NavBar"
+import NavBar from "./components/layout/NavBar"
 
 import {
   BrowserRouter as Router,
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <Router>
-      <div className='min-h-screen font-mono bg-gray-800'>
+      <div className='min-h-screen w-full font-mono bg-gray-800 overflow-hidden'>
         <NavBar/>
         <Routes>
           <Route 

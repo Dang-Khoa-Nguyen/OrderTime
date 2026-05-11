@@ -139,19 +139,27 @@ export default function Dashboard() {
 
 
     return(
-        <div className="text-white text-center min-h-screen w-full">
-            <div className="flex justify-center items-center">
+        <div className="text-white text-center w-full">
+            <div className="h-24 flex justify-center items-center my-3">
                 <Introduction/>
             </div> 
             <div className="flex justify-center h-full">
                 <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg">
+                    <div className="font-grotesk text-xl"> Simulation Panel </div>
                     <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
-                    <div className="flex gap-3 w-5/6">
-                        <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
-                        <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
+                    <div className="w-5/6">
+                        <p className="text-xs text-gray-400 text-left italic mb-2">Start by adjusting how fast and clear the voice speaks.</p>
+                        <div className="w-full flex gap-3"> 
+                            <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
+                            <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
+                        </div>
                     </div>
-                    <div className="flex justify-center items-center w-5/6">
-                        <RestaurantSelector setRestaurantId={setRestaurantId}/>
+
+                    <div className="w-5/6">
+                        <p className="text-xs text-gray-400 text-left italic mb-2">Select a restaurant before simulating a real ordering scenario.</p>
+                        <div className="w-full flex justify-center items-center">
+                            <RestaurantSelector setRestaurantId={setRestaurantId}/>
+                        </div>
                     </div>
                     <div className="flex justify-between items-center h-10 w-5/6 gap-4">
                         <StartOrder getOrder={getOrder}/>
@@ -166,9 +174,11 @@ export default function Dashboard() {
 
             <div className="flex justify-center my-5">
                 <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg">
-                <div className="text-center text-lg">Write your orders</div>
+                <div className="text-center text-xl font-grotesk font-semibold"> Answer Panel </div>
                 
-                <div className="flex w-5/6 gap-1">
+                <div className="w-5/6">
+                    <p className="text-xs text-gray-400 text-left italic mb-2"> Write down each order with quantity and add to the list </p>
+                    <div className="flex gap-1">
                     <input
                     className="rounded-lg w-10 text-gray-800 text-xs text-center"
                     placeholder="Qty"
@@ -180,13 +190,16 @@ export default function Dashboard() {
                     <UserInputBox value={answer} onChange={e => setAnswer(e.target.value)} onKeyDown={e => e.key === "Enter" && handleAddOrder()}/>
                     <AddAnswerBox onClick={handleAddOrder}/>
                 </div>
+                </div>
 
                 <div className="w-full flex flex-col items-center justify-center gap-1">
-                    <span>Order list</span>
+                    <span className="font-grotesk font-semibold text-xl">Order List</span>
                     <div className="w-5/6">
                     {orders.length === 0 ? (
-                        <div className="border border-dashed bg-gray-900 text-xs opacity-50 text-center py-2">
-                        No order has been made
+                        <div className="border border-dashed bg-gray-900 text-xs opacity-50 text-start px-2 py-2">
+                        <p>No order has been made. </p>
+                        <p>Please write an order and then add to the list.</p>
+                        <p>After you are done, please click submit to see the score.</p>
                         </div>
                     ) : (
                         orders.map(order => (
@@ -200,27 +213,27 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="w-5/6 mb-3">
-  <div className="flex justify-end items-center gap-3">
-    
-    {isSubmit && (
-      <div className={`flex items-center gap-1 text-sm font-medium px-3 py-1.5 rounded-full ${
-        overallScore >= 80 ? "bg-green-900/50 text-green-400" :
-        overallScore >= 50 ? "bg-yellow-900/50 text-yellow-400" :
-        "bg-red-900/50 text-red-400"
-      }`}>
-        <CiCircleCheck className="text-lg"/>
-        {overallScore}%
-      </div>
-    )}
+                    <div className="flex justify-end items-center gap-3">
+                        
+                        {isSubmit && (
+                        <div className={`flex items-center gap-1 text-sm font-medium px-3 py-1.5 rounded-full ${
+                            overallScore >= 80 ? "bg-green-900/50 text-green-400" :
+                            overallScore >= 50 ? "bg-yellow-900/50 text-yellow-400" :
+                            "bg-red-900/50 text-red-400"
+                        }`}>
+                            <CiCircleCheck className="text-lg"/>
+                            {overallScore}%
+                        </div>
+                        )}
 
-    <button
-      className="bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all rounded-lg px-4 py-2 text-sm font-medium"
-      onClick={handleSubmit}
-    >
-      Submit
-    </button>
-  </div>
-</div>
+                        <button
+                        className="bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all rounded-lg px-4 py-2 text-sm font-medium"
+                        onClick={handleSubmit}
+                        >
+                        Submit
+                        </button>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>

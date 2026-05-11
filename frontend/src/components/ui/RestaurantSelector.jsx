@@ -4,14 +4,17 @@ export default function RestaurantSelector({setRestaurantId}) {
     const {restaurants, loading, error} = useRestaurant();
 
     if (error) {
-        return (<div> It's error </div>)
+        return (<div className="flex items-center justify-center w-full h-11 pl-3 pr-10 bg-gray-100 border border-gray-200 
+                    rounded-xl text-xs text-gray-400 appearance-none cursor-not-allowed opacity-60"> 
+                    The selector is working on. Please wait!
+                </div>)
     }
     return(
         <div className="relative w-full">
             {loading ? (
                 <select
                     disabled
-                    className="pl-3 pr-10 bg-gray-100 border border-gray-200 
+                    className="w-full h-11 pl-3 pr-10 bg-gray-100 border border-gray-200 
                     rounded-xl text-xs text-gray-400 appearance-none cursor-not-allowed opacity-60"
                 >
                     <option>Loading...</option>
