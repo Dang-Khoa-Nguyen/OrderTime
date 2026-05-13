@@ -7,7 +7,7 @@ import SpeedController from "../components/controllers/SpeedController";
 
 // icon imports
 import { RiSpeakFill } from "react-icons/ri";
-import { CiCircleCheck } from "react-icons/ci";
+import { CiCircleCheck, CiCircleQuestion  } from "react-icons/ci";
 import { fetchCheckAnswer, fetchOrders } from "../api/Restaurant";
 import {useState} from "react";
 import AnswerBox from "../components/ui/AnswerBox";
@@ -31,6 +31,7 @@ export default function Dashboard() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [audio, setAudio] = useState(null)
     const [isOrder, setIsOrder] = useState(false);
+    const [isShowInstruction, setIsShowInstruction] = useState(false);
 
     console.log(result)
     console.log(orders)
@@ -129,6 +130,14 @@ export default function Dashboard() {
         audio.currentTime = 0  // rewind to start
         audio.play()
     }
+    
+    const handleControlInstruction = () => {
+        if (isShowInstruction) {
+            setIsShowInstruction(false);
+        } else {
+            setIsShowInstruction(true);
+        } 
+    }
 
     const handleSubmit = async () => {
         setIsSubmit(false)
@@ -144,19 +153,25 @@ export default function Dashboard() {
                 <Introduction/>
             </div> 
             <div className="flex justify-center h-full">
-                <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg">
-                    <div className="font-grotesk text-xl"> Simulation Panel </div>
+                <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg relative">
+                    <div className="w-full text-center text-2xl mt-4 font-semibold"> Simulation Panel </div>
+                    <div onClick={handleControlInstruction} className="absolute right-2 top-4 mt-5 -translate-y-1/2 group cursor-pointer text-xl">
+                        <CiCircleQuestion />
+                        <span className="absolute right-0 top-6 hidden group-hover:block bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap border border-gray-600">
+                            Show Instructions
+                        </span>
+                    </div>
                     <RiSpeakFill className={`text-3xl h-10 ${isSpeaking ? "animate-speaking" : "text-white"}`}/>
                     <div className="w-5/6">
-                        <p className="text-xs text-gray-400 text-left italic mb-2"> Adjust the voice you would like to face.</p>
+                        <p className="text-xs text-gray-400 text-left italic mb-2 font-bold"> Adjust your preferred voice</p>
                         <div className="w-full flex gap-3"> 
                             <SpeedController newRate={newRate} decreaseSpeed={decreaseSpeed} increaseSpeed={increaseSpeed}/>
                             <VoiceController newPitch={newPitch} decreaseTone={decreaseTone} increaseTone={increaseTone}/>
                         </div>
                     </div>
 
-                    <div className="w-5/6">
-                        <p className="text-xs text-gray-400 text-left italic mb-2">Select a restaurant before simulating a real ordering scenario.</p>
+                    <div className="w-5/6 mt-2">
+                        <p className="text-xs text-gray-400 text-left italic mb-2 font-bold">Select your preferred restaurant </p>
                         <div className="w-full flex justify-center items-center">
                             <RestaurantSelector setRestaurantId={setRestaurantId}/>
                         </div>
@@ -169,24 +184,28 @@ export default function Dashboard() {
                         )}
                     </div>
                     <AnswerBox text={text} isOpen={isOpen}/>
-                    <div className="w-5/6 bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 mb-3 text-xs text-gray-300 text-left space-y-1">
-                        <p>① Set your preferred <span className="text-white font-medium">speed</span> and <span className="text-white font-medium">voice pitch</span>. (optional)</p>
-                        <p>② Select a <span className="text-white font-medium">restaurant</span> from the dropdown. (complusory)</p>
-                        <p>③ Press <span className="text-white font-medium">Start Order</span> to hear the customer speak.</p>
-                        <p>④ Use <span className="text-white font-medium">Replay</span> if you missed something. (Appear after start ordering)</p> 
-                        <p>⑤ Head to the <span className="text-white font-medium">Answer Panel</span> below to write your orders.</p>
-                        <p>⑥ Add an order with name and quantity to the <span className="text-white font-medium">Order List </span>.</p>
-                        <p>⑦ When done, press <span className="text-white font-medium">Submit</span> to see your score.</p>                 
-                    </div>           
+
+                    {isShowInstruction && (
+                        <div className="w-5/6 bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 mb-3 text-xs text-gray-300 text-left space-y-1">
+                            <h1 className="text-center text-lg font-semibold text-gray-50"> Instructions </h1>
+                            <p>① Set your preferred <span className="text-white font-medium">speed</span> and <span className="text-white font-medium">voice pitch</span>. (optional)</p>
+                            <p>② Select a <span className="text-white font-medium">restaurant</span> from the dropdown. (required)</p>
+                            <p>③ Press <span className="text-white font-medium">Start Order</span> to hear the customer speak.</p>
+                            <p>④ Use <span className="text-white font-medium">Replay</span> if you missed something. (Appear after start ordering)</p> 
+                            <p>⑤ Head to the <span className="text-white font-medium">Answer Panel</span> below to write your orders.</p>
+                            <p>⑥ Add an order with name and quantity to the <span className="text-white font-medium">Order List </span>.</p>
+                            <p>⑦ When done, press <span className="text-white font-medium">Submit</span> to see your score.</p>                 
+                        </div>       
+                    )}          
                 </div>
             </div>
                         
             <div className="flex justify-center my-5">
                 <div className="flex flex-col justify-center items-center gap-3 bg-gray-700 border border-gray-600 w-1/2 rounded-lg">
-                <div className="text-center text-xl font-grotesk font-semibold"> Answer Panel </div>
+                <div className="text-center text-2xl font-grotesk font-semibold mt-3"> Answer Panel </div>
                 
                 <div className="w-5/6">
-                    <p className="text-xs text-gray-400 text-left italic mb-2"> Write down each order with quantity and add to the list </p>
+                    <p className="text-xs text-gray-400 text-left italic mb-2"> Write down each order with quantity </p>
                     <div className="flex gap-1">
                     <input
                     className="rounded-lg w-10 text-gray-800 text-xs text-center"
@@ -202,13 +221,11 @@ export default function Dashboard() {
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-center gap-1">
-                    <span className="font-grotesk font-semibold text-xl">Order List</span>
+                    <span className="font-grotesk font-semibold text-2xl">Order List</span>
                     <div className="w-5/6">
                     {orders.length === 0 ? (
-                        <div className="border border-dashed bg-gray-900 text-xs opacity-50 text-start px-2 py-2">
-                        <p>No order has been made. </p>
-                        <p>Please write an order and then add to the list.</p>
-                        <p>After you are done, please click submit to see the score.</p>
+                        <div className="border border-dashed bg-gray-900 text-xs opacity-50 text-center px-2 py-2">
+                            <p>No order has been made. </p>
                         </div>
                     ) : (
                         orders.map(order => (
