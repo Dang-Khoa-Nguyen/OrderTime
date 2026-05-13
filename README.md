@@ -5,9 +5,10 @@ OrderTime is a practice platform designed to help users sharpen their listening 
     <img src="https://img.shields.io/badge/ReactJS-61DAFB?style=for-the-badge&logo=react&logoColor=white" />
     <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
     <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-    <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
+    <img src="https://img.shields.io/badge/FastAPI-000000?style=for-the-badge&logo=fastapi&logoColor=white" />
     <img src="https://img.shields.io/badge/Google_GenAI-4285F4?style=for-the-badge&logo=google&logoColor=white" />
     <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
+    <img src="https://img.shields.io/badge/Elevenlab-3ECF8E?style=for-the-badge&logo=elevenlab&logoColor=white" />
     </p>
 
 ## Installsation and Activate environment
@@ -18,41 +19,50 @@ cd backend
 .\ai\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
+
+Run ```uvicorn main:app --reload``` while running the frontend.
+
 ### 2. Frontend
 Navigate to the frontend directory and install the necessary packages:
 ```
 cd frontend 
 npm install
 ```
+Run ```npm start``` while running the backend.
+
+## Live Demo
+https://order-time.vercel.app/
 
 ## Project preview
-![dashboard](frontend/public/images/dashboard.png)
+### Homepage
+![dashboard](frontend/public/images/dashboard-1-simulation.png)
+![dashboard](frontend/public/images/dashboard-1-answer.png)
 
-### Functions
-1. Restaurant Selector: Choose different restaurant environments to practice in.
+| Feature | Description |
+|---|---|
+| **Restaurant Selector** | Choose different restaurant environments to practice in |
+| **Order Simulation** | Trigger a realistic customer request with one click |
+| **Answer Toggle** | Reveal or hide the answer box using the Open/Close button |
+| **Audio Control** | Adjust voice speed and pitch to increase difficulty |
+| **Realistic Audio** | High-quality customer voices that simulate real-world scenarios |
+| **Restaurant Management** | Add new restaurants directly into the simulation |
+| **Answer Box** | See exactly what the customer ordered after submitting |
+| **AI Voice Integration** | Natural conversations powered by ElevenLabs AI |
+| **Interactive Input** | Type in orders and verify your answers in real time |
+| **Instructions** | Toggle the `?` icon near "Simulation Panel" heading anytime for a quick how-to guide |
 
-2. Order Simulation: Click the "Order" button to trigger a customer request.
+### Menu Table Page
+![menu table](frontend/public/images/menu.png)
 
-3. Answer Toggle: Use the Open/Close button to reveal or hide the answer box.
-
-4. Audio Control: Increase voice speed and difficulty for better practice.
-
-5. Realistic Audio: High-quality customer voices to simulate real-world scenarios.
-
-6. Restaurant Management: Allows users to add new restaurants to the simulation
-
-7. Answer box: Allows users to know what food that customer ordered.
+| Feature | Description |
+|---|---|
+| **CRED Control Items** |  Ability to create, read, edit and delete items of the restaurant. |
+| **Table Management** | Ability to delete the table. |
 
 ### Additonal features
-- AI Voice Integration: Uses AI to create natural and realistic conversations.
 
-- Interactive Input: Added text box for answer input and verification.
-
-- Menu Page: View food items and details for all restaurants in one place.
-
-- Item Management: Ability to add single food items.
-
-- Expansion: Easily add single restaurant profiles.
+- CRED Control Restaurant: Easily add and edit single restaurant profile.
+- Authentication: Apply login and signup for user to create their own restaurant.
 
 ## Connect With Me
 I'd love to connect and hear your thoughts on the project!
