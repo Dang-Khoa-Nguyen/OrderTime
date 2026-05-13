@@ -210,9 +210,6 @@ class SupabaseFunction():
             .execute()
         )
         
-        if len(response_items.data) == 0:
-            return False
-        
         response_restaurant = (
             SUPABASE_CLIENT_SERVICE
             .table("restaurant_name")
