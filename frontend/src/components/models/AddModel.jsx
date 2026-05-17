@@ -48,14 +48,6 @@ export default function AddModal({ onClose, onSave }) {
         setUploading(false)
     };
 
-    if (loading) {
-        return(
-            <div>
-                it's loading
-            </div>
-        )
-    }
-
     if (error) {
         return(
             <div>
@@ -76,8 +68,15 @@ export default function AddModal({ onClose, onSave }) {
           <label className="text-xs text-gray-500 font-semibold mb-1">
             Restaurants
           </label>
-
-          <select
+        
+            {loading ? ( <select
+            value={restaurantId}
+            onChange={(e) => setRestaurantId(e.target.value)}
+            className="w-full border p-2 mb-4 bg-gray-300 rounded-lg cursor-not-allowed"
+          >
+            <option> Loading restaurants... </option>
+        </select>) : (
+            <select
             value={restaurantId}
             onChange={(e) => setRestaurantId(e.target.value)}
             className="w-full border p-2 mb-4 bg-white rounded-lg"
@@ -90,6 +89,8 @@ export default function AddModal({ onClose, onSave }) {
               </option>
             ))}
           </select>
+        )}
+          
         </div>
         
                 

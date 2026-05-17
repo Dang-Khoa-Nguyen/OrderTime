@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import { fetchDeleteRestaurant, fetchRestaurantMenu, fetchAddItem, fetchDeleteItem, fetchEditItem } from "../api/Restaurant";
 import useRestaurant from "../hooks/useRestaurant"
 import MenuLoader from "../components/loader/MenuLoader";
-import DeleteRestaurant from "../components/common/DeleteRestaurant";
+// import DeleteRestaurant from "../components/common/DeleteRestaurant";
 import AddItem from "../components/common/AddItem";
 import AddItemModel from "../components/models/AddItemModel";
 import EditItemModel from "../components/models/EditItemModel";
+import RestaurantController from "../components/controllers/RestaurantController";
 
 // Import icons
 import { MdDelete } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
+import { FaStore } from "react-icons/fa";
+
 
 export default function Menu() {
   const [items, setItems] = useState([])
@@ -17,7 +20,7 @@ export default function Menu() {
   const {restaurants, loading, error} = useRestaurant();
   const [openCreate, setOpenCreate] = useState(false);
   const [editItem, setEditItem] = useState(null) 
-
+  console.log(restaurantId)
   const handleDelete = async () => {
       await fetchDeleteRestaurant(restaurantId);
   }
@@ -61,26 +64,31 @@ export default function Menu() {
     <div className="p-6 w-5/6 mx-auto">
       <h2 className="flex items-center justify-center h-20 font-grotesk text-center mb-4 text-3xl font-manrope text-white -mt-3">Menu Restaurants </h2>
 
-      <div className="flex gap-5">
-      {loading ? (
-      <select
-        disabled
-        className="mb-4 px-3 py-2 bg-gray-100 border border-gray-200
-        rounded-xl text-sm text-gray-400 appearance-none cursor-not-allowed opacity-60"
-        >
-          <option>Loading...</option>
-        </select>) : (
-          <select 
-            onChange={(e) => setRestaurantId(e.target.value)}
-            className="mb-4 px-3 py-2 rounded-md bg-gray-800 text-white 
-            border border-gray-200 focus:outline-none text-sm">
-              <option key={0} value={0}> Select restaurant </option>
-              {restaurants.map((res) => (
-                  <option key={res.id} value={res.id}>{res.name}</option>
-              ))}
-          </select>
-        )}
-        <DeleteRestaurant handleDelete={handleDelete}/>
+      <div className="flex justify-between items-center">
+        <div className="flex gap-5 pb-3">
+          {loading ? (
+          <select
+            disabled
+            className="mb-4 px-3 py-2 bg-gray-100 border border-gray-200
+            rounded-xl text-sm text-gray-400 appearance-none cursor-not-allowed opacity-60"
+            >
+              <option>Loading...</option>
+            </select>) : (
+              <select 
+                onChange={(e) => setRestaurantId(parseInt(e.target.value))}
+                className="pl-3 pr-9 py-2 rounded-md bg-gray-800 text-white 
+                border border-gray-200 focus:outline-none text-sm">
+                  <option key={0} value={0} className="h-8"> Select restaurant </option>
+                  {restaurants.map((res) => (
+                      <option key={res.id} value={res.id}>{res.name}</option>
+                  ))}
+              </select>
+            )}
+
+            <RestaurantController handleDelete={handleDelete}/>
+        </div>
+
+        {/* <DeleteRestaurant handleDelete={handleDelete}/>*/}
         <AddItem setOpenCreate={setOpenCreate}/>
 
          {openCreate && (
@@ -88,9 +96,9 @@ export default function Menu() {
                 onClose={() => setOpenCreate(false)}
                 onSave={handleAdd}
             />)
-          }
+          } 
       </div>
-      <div className="overflow-x-auto rounded-lg border border-yellow-500">
+        <div className="overflow-x-auto rounded-lg border border-yellow-500">
         <table className="w-full text-sm text-left text-white">
 
           <thead className="bg-yellow-500 text-gray-900 uppercase text-xs">
@@ -101,8 +109,8 @@ export default function Menu() {
               <th className="px-6 py-3 w-32"> Actions </th>
             </tr>
           </thead>
-
-          <tbody>
+          {restaurantId !==0 && (
+             <tbody>
             {items.map((item, i) => (
               <tr
                 key={i}
@@ -133,8 +141,8 @@ export default function Menu() {
               </tr>
             ))}
           </tbody>
+          ) }
         </table>
-        
         {editItem && (
           <EditItemModel
             item={editItem}
@@ -143,6 +151,13 @@ export default function Menu() {
           />
         )}
       </div>
+
+      {restaurantId===0 && (
+        <div className="w-full h-48 flex flex-col items-center justify-center text-white gap-3">
+          <FaStore className="text-3xl"/>
+          <p> Select the restaurant above to view its menu </p>
+        </div>
+      )} 
     </div>
   );
 }
