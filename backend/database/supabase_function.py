@@ -38,7 +38,7 @@ class SupabaseFunction():
         # Fetch all restaurant
         response = (
             SUPABASE_CLIENT_SERVICE
-            .table("restaurant_name")
+            .table("restaurants")
             .select("id, name")
             .execute()
         )
@@ -81,7 +81,8 @@ class SupabaseFunction():
             return []
         
         for item in items:
-            item["category"] = item.pop("category", {}).get("category_name")
+            cat = item.pop("category", None)
+            item["category"] = cat["category_name"] if cat else None
 
         return items
     
@@ -112,7 +113,7 @@ class SupabaseFunction():
                 })
                 .execute()
             )
-        return True
+        return bool(response.data)
 
     def edit_item(SUPABASE_CLIENT_SERVICE,item):
         # Check if item already exists
@@ -134,13 +135,13 @@ class SupabaseFunction():
                 .table("menu_items")
                 .update({
                 "name": item["name"],
-                "category_id": item["category"],
+                "category_id": item["category_id"],
                 "price": float(item["price"]),
                 })
                 .eq("id", int(item["id"]))
                 .execute()
             )
-        return True
+        return bool(response.data)
         
         
     def upload_item(SUPABASE_CLIENT_SERVICE, items):
@@ -153,14 +154,15 @@ class SupabaseFunction():
                 if not is_add:
                     print("Already have the item", item["name"])
             return True
-        except:
+        except Exception as e:
+            print("upload_item failed:", e)
             return False
 
     def get_unique_restaurant_name(SUPABASE_CLIENT_SERVICE, restaurant_name):
         # Check how many restaurants have the same base name
         response = (
             SUPABASE_CLIENT_SERVICE
-            .table("restaurant_name")
+            .table("restaurants")
             .select("name")
             .ilike("name", f"{restaurant_name}%")  
             .execute()
@@ -189,7 +191,7 @@ class SupabaseFunction():
         
         response = (
             SUPABASE_CLIENT_SERVICE
-            .table("restaurant_name")
+            .table("restaurants")
             .insert({"name": unique_name})
             .execute()
         )
@@ -202,26 +204,15 @@ class SupabaseFunction():
             
     
     def delete_restaurant(SUPABASE_CLIENT_SERVICE, restaurant_id):
-        response_items = (
-             SUPABASE_CLIENT_SERVICE
-            .table("menu_items")
-            .delete()
-            .eq("restaurant_id", int(restaurant_id))
-            .execute()
-        )
-        
         response_restaurant = (
             SUPABASE_CLIENT_SERVICE
-            .table("restaurant_name")
+            .table("restaurants")
             .delete()
             .eq("id", int(restaurant_id))
             .execute()
         )
-        
-        if len(response_restaurant.data) == 0:
-            return False
-        
-        return True
+                
+        return bool(response_restaurant.data)
     
     def delete_item(SUPABASE_CLIENT_SERVICE, item_id):
         response_items = (
