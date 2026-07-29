@@ -208,7 +208,7 @@ export default function Dashboard() {
                     <p className="text-xs text-gray-400 text-left italic mb-2"> Write down each order with quantity </p>
                     <div className="flex gap-1">
                     <input
-                    className="rounded-lg w-10 text-gray-800 text-xs text-center"
+                    className="rounded-lg w-10 text-gray-800 bg-white text-xs text-center"
                     placeholder="Qty"
                     type="number"
                     min="1"
