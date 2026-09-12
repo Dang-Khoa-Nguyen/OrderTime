@@ -1,11 +1,22 @@
+import { supabase } from "../lib/supabaseClient";
+
 // The URL link
 const API_URL = process.env.REACT_APP_API_URL;
+
+/* Returns the Authorization header carrying the logged-in user's access token,
+   so the backend can identify the user. Empty object if not logged in. */
+async function authHeader() {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 /* This fetch GET the all restaurant with detail information. */
 export async function fetchGetRestaurants() {
   // Send get request to backend to get all text
   const res = await fetch(
-    `${API_URL}/orders/get_restaurants`
+    `${API_URL}/orders/get_restaurants`,
+    { headers: await authHeader() }
   );
 
   // Verify the response
@@ -40,6 +51,7 @@ export async function fetchOrders(payload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...(await authHeader()),
     },
     body: JSON.stringify({
       speed: payload.speed,
@@ -66,6 +78,7 @@ export async function fetchRestaurantMenu(restaurantId) {
     `${API_URL}/orders/get_items/${restaurantId}`,
     {
       method: "GET",
+      headers: await authHeader(),
     });
 
   // Verify the response
@@ -86,7 +99,7 @@ export async function fetchCheckAnswer(answer, result) {
     `${API_URL}/orders/check_answer`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(await authHeader()) },
       body: JSON.stringify({ answer, result })
     });
 
@@ -108,6 +121,7 @@ export async function fetchUploadMenu(formData,restaurantId) {
     `${API_URL}/orders/${restaurantId}`,
     {
       method: "POST",
+      headers: await authHeader(),
       body: formData,
     });
 
@@ -129,6 +143,7 @@ export async function fetchDeleteRestaurant(restaurantId) {
     `${API_URL}/orders/${restaurantId}`,
     {
       method: "DELETE",
+      headers: await authHeader(),
     });
 
   // Verify the response
@@ -149,6 +164,7 @@ export async function fetchDeleteItem(itemId) {
     `${API_URL}/orders/delete_item/${itemId}`,
     {
       method: "DELETE",
+      headers: await authHeader(),
     });
 
   // Verify the response
@@ -169,6 +185,7 @@ export async function fetchAddItem(formData) {
     `${API_URL}/orders/add_item`,
     {
       method: "POST",
+      headers: await authHeader(),
       body: formData
     });
 
@@ -190,6 +207,7 @@ export async function fetchEditItem(formData) {
     `${API_URL}/orders/edit_item`,
     {
       method: "POST",
+      headers: await authHeader(),
       body: formData,
     });
 
